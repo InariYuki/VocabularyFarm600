@@ -22,7 +22,18 @@ public class UI : MonoBehaviour
     Canvas UI_canvas;
     Vector3 touch_point;
     GiantAnimal currently_interacting_animal;
+    public int control_mode = 0;
     void input_control(){
+        switch(control_mode){
+            case 0:
+                navigation_mode();
+                break;
+            case 1:
+                object_control_mode();
+                break;
+        }
+    }
+    void navigation_mode(){
         if(Input.GetKeyDown(KeyCode.Mouse0)){
             touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -31,7 +42,9 @@ public class UI : MonoBehaviour
             if(hit){
                 currently_interacting_animal = hit.transform.GetComponent<GiantAnimal>();
                 currently_interacting_animal.interact(this);
-                currently_interacting_animal.toggle_buttons();
+                if(currently_interacting_animal.button_show == false){
+                    currently_interacting_animal.toggle_buttons();
+                }
             }
             else{
                 if(currently_interacting_animal != null && currently_interacting_animal.button_show){
@@ -44,6 +57,13 @@ public class UI : MonoBehaviour
             main_camera.transform.position += touch_point - main_camera.ScreenToWorldPoint(Input.mousePosition);
         }
         main_camera.orthographicSize = Mathf.Clamp(main_camera.orthographicSize - Input.GetAxisRaw("Mouse ScrollWheel") , 1 , 16);
+    }
+    void object_control_mode(){
+        if(Input.GetKeyDown(KeyCode.Mouse0)){
+            currently_interacting_animal.target_position = main_camera.ScreenToWorldPoint(Input.mousePosition);
+            touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
+            control_mode = 0;
+        }
     }
     [SerializeField] GameObject care_screen;
     public void toggle_care_screen(){

@@ -295,7 +295,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -181.9, y: -55.6}
+  m_AnchoredPosition: {x: -121, y: -55.6}
   m_SizeDelta: {x: 243.49, y: 53.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &275592132
@@ -2053,6 +2053,7 @@ MonoBehaviour:
   - "\u860B\u679C"
   - "\u9999\u8549"
   main_camera: {fileID: 519420031}
+  control_mode: 0
   care_screen: {fileID: 2035139231}
 --- !u!1 &1694695093
 GameObject:
@@ -2091,7 +2092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 181.9, y: -55.6}
+  m_AnchoredPosition: {x: 123, y: -55.6}
   m_SizeDelta: {x: 243.49, y: 53.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1694695095
