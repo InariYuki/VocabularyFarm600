@@ -18,10 +18,10 @@ public class UI : MonoBehaviour
     private void Update() {
         input_control();
     }
-    [SerializeField] Camera main_camera;
+    public Camera main_camera;
     Canvas UI_canvas;
     Vector3 touch_point;
-    public GiantAnimal currently_interacting_animal;
+    GiantAnimal currently_interacting_animal;
     void input_control(){
         if(Input.GetKeyDown(KeyCode.Mouse0)){
             touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
@@ -30,6 +30,7 @@ public class UI : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f);
             if(hit){
                 currently_interacting_animal = hit.transform.GetComponent<GiantAnimal>();
+                currently_interacting_animal.interact(this);
                 currently_interacting_animal.toggle_buttons();
             }
             else{
@@ -42,6 +43,13 @@ public class UI : MonoBehaviour
         if(Input.GetKey(KeyCode.Mouse0)){
             main_camera.transform.position += touch_point - main_camera.ScreenToWorldPoint(Input.mousePosition);
         }
-        main_camera.orthographicSize = Mathf.Clamp(main_camera.orthographicSize - Input.GetAxisRaw("Mouse ScrollWheel") , 1 , 8);
+        main_camera.orthographicSize = Mathf.Clamp(main_camera.orthographicSize - Input.GetAxisRaw("Mouse ScrollWheel") , 1 , 16);
+    }
+    [SerializeField] GameObject care_screen;
+    public void toggle_care_screen(){
+        care_screen.SetActive(true);
+    }
+    public void close_care_screen(){
+        care_screen.SetActive(false);
     }
 }
