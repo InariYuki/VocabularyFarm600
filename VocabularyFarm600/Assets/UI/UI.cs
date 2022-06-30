@@ -31,6 +31,9 @@ public class UI : MonoBehaviour
             case 1:
                 object_control_mode();
                 break;
+            case 2:
+                fur_game_mode();
+                break;
         }
     }
     void navigation_mode(){
@@ -65,11 +68,47 @@ public class UI : MonoBehaviour
             control_mode = 0;
         }
     }
+    float radius = 0.5f;
+    void fur_game_mode(){
+        if(Input.GetKey(KeyCode.Mouse0)){
+            Collider2D[] alphabets = Physics2D.OverlapCircleAll(main_camera.ScreenToWorldPoint(Input.mousePosition) , radius);
+            for(int i = 0; i < alphabets.Length; i++){
+                BubbleAlphabet alphabet = alphabets[i].GetComponent<BubbleAlphabet>();
+                alphabet.velocity = (alphabets[i].transform.position - main_camera.ScreenToWorldPoint(Input.mousePosition)).normalized;
+            }
+        }
+    }
+    [SerializeField] GameObject main_screen_ui , game_screen_ui;
+    void start_main_screen(){
+        main_screen.SetActive(true);
+        main_screen_ui.SetActive(true);
+    }
+    void close_main_screen(){
+        main_screen.SetActive(false);
+        main_screen_ui.SetActive(false);
+    }
     [SerializeField] GameObject care_screen;
     public void toggle_care_screen(){
         care_screen.SetActive(true);
     }
     public void close_care_screen(){
         care_screen.SetActive(false);
+    }
+    [SerializeField] GameObject main_screen;
+    [SerializeField] GameObject fur_game_screen;
+    public void start_fur_game(){
+        close_care_screen();
+        close_main_screen();
+        fur_game_screen.SetActive(true);
+        game_screen_ui.SetActive(true);
+        main_camera.transform.position = new Vector3(0 , 0 , -10);
+        main_camera.orthographicSize = 4;
+        control_mode = 2;
+    }
+    public void close_fur_game(){
+        fur_game_screen.SetActive(false);
+        game_screen_ui.SetActive(false);
+        start_main_screen();
+        control_mode = 0;
     }
 }
