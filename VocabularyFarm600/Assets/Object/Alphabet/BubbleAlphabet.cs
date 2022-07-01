@@ -40,7 +40,7 @@ public class BubbleAlphabet : MonoBehaviour
     }
     void border_approach_control(){
         if(transform.position.y > 2f) _direction.y = -1;
-        else if(transform.position.y < -1f) _direction.y = 1;
+        else if(transform.position.y < -0.5f) _direction.y = 1;
         if(transform.position.x > 5f) _direction.x = -1;
         else if(transform.position.x < -5f) _direction.x = 1;
     }

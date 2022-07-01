@@ -104,11 +104,16 @@ public class UI : MonoBehaviour
         main_camera.transform.position = new Vector3(0 , 0 , -10);
         main_camera.orthographicSize = 4;
         control_mode = 2;
+        fur_game_screen.GetComponent<FurGame>().ui = this;
     }
     public void close_fur_game(){
         fur_game_screen.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
+    }
+    public string[] pull_random_word_from_dict(){
+        string random_word = vocabulary_eng[Random.Range(0 , vocabulary_eng.Length)];
+        return new string[2] {random_word , eng_to_cht_dict[random_word]};
     }
 }
