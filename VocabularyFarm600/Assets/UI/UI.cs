@@ -69,14 +69,31 @@ public class UI : MonoBehaviour
         }
     }
     float radius = 0.5f;
+    int fur_game_substate = 0;
     void fur_game_mode(){
-        if(Input.GetKey(KeyCode.Mouse0)){
-            Collider2D[] alphabets = Physics2D.OverlapCircleAll(main_camera.ScreenToWorldPoint(Input.mousePosition) , radius);
-            for(int i = 0; i < alphabets.Length; i++){
-                BubbleAlphabet alphabet = alphabets[i].GetComponent<BubbleAlphabet>();
-                alphabet.velocity = (alphabets[i].transform.position - main_camera.ScreenToWorldPoint(Input.mousePosition)).normalized;
-            }
+        switch(fur_game_substate){
+            case 0:
+                if(Input.GetKey(KeyCode.Mouse0)){
+                    Collider2D[] alphabets = Physics2D.OverlapCircleAll(main_camera.ScreenToWorldPoint(Input.mousePosition) , radius);
+                    for(int i = 0; i < alphabets.Length; i++){
+                        BubbleAlphabet alphabet = alphabets[i].GetComponent<BubbleAlphabet>();
+                        if(alphabet != null) alphabet.velocity = (alphabets[i].transform.position - main_camera.ScreenToWorldPoint(Input.mousePosition)).normalized;
+                    }
+                }
+                break;
+            case 1:
+                if(Input.GetKey(KeyCode.Mouse0)){
+                    Collider2D[] alphabet_containers = Physics2D.OverlapCircleAll(main_camera.ScreenToWorldPoint(Input.mousePosition) , radius);
+                    for(int i = 0; i < alphabet_containers.Length; i++){
+                        AlphabetContainer alphabet_container = alphabet_containers[i].GetComponent<AlphabetContainer>();
+                        if(alphabet_container != null) alphabet_container.destroy_container();
+                    }
+                }
+                break;
         }
+    }
+    public void set_fur_game_substate(int state){
+        fur_game_substate = state;
     }
     [SerializeField] GameObject main_screen_ui , game_screen_ui;
     void start_main_screen(){
@@ -104,7 +121,9 @@ public class UI : MonoBehaviour
         main_camera.transform.position = new Vector3(0 , 0 , -10);
         main_camera.orthographicSize = 4;
         control_mode = 2;
-        fur_game_screen.GetComponent<FurGame>().ui = this;
+        fur_game_substate = 0;
+        FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
+        game_ctl.set_current_word(this);
     }
     public void close_fur_game(){
         fur_game_screen.SetActive(false);

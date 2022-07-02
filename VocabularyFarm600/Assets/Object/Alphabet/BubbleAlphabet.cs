@@ -5,8 +5,16 @@ using UnityEngine;
 public class BubbleAlphabet : MonoBehaviour
 {
     Rigidbody2D body;
+    SpriteRenderer sprite;
+    int _me;
+    public int me{
+        get{
+            return _me;
+        }
+    }
     private void Awake() {
         body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
     bool is_active = true;
     private void FixedUpdate() {
@@ -14,6 +22,10 @@ public class BubbleAlphabet : MonoBehaviour
         random_roam();
         border_approach_control();
         move();
+    }
+    public void set_sprite(Sprite alphabet_sprite , int word){
+        sprite.sprite = alphabet_sprite;
+        _me = word;
     }
     Vector2 _direction , _velocity;
     public Vector2 velocity{
