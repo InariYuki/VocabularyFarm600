@@ -6,6 +6,7 @@ public class GiantAnimal : MonoBehaviour
 {
     [SerializeField] GameObject button_holder;
     [SerializeField] Transform feet;
+    public int first_word , last_word;
     UI interacter;
     Rigidbody2D rigid_body;
     Vector2 direction;
@@ -14,13 +15,22 @@ public class GiantAnimal : MonoBehaviour
         rigid_body = GetComponent<Rigidbody2D>();
     }
     private void Start() {
+        start_ai_activity();
+    }
+    public void start_ai_activity(){
+        StopAllCoroutines();
         StartCoroutine(ai_start());
     }
     IEnumerator ai_start(){
         yield return new WaitForSeconds(1f);
         idle_mode_init();
     }
-    public bool button_show;
+    bool button_show;
+    public bool _button_show{
+        get{
+            return button_show;
+        }
+    }
     public void toggle_buttons(){
         button_holder.SetActive(!button_holder.activeSelf);
         button_show = button_holder.activeSelf;
@@ -29,7 +39,7 @@ public class GiantAnimal : MonoBehaviour
         interacter = ui;
     }
     public void care_button_clicked(){
-        interacter.toggle_care_screen();
+        interacter.toggle_care_screen(this);
         idle_mode_init();
         toggle_buttons();
     }

@@ -5,7 +5,7 @@ using TMPro;
 
 public class FurGame : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI word_display;
+    [SerializeField] TextMeshProUGUI word_display , progress_bar;
     public Sprite[] alphabet_sprite = new Sprite[26];
     public char[] alphabet = new char[26];
     Dictionary<char , Sprite> char_to_instance_dict = new Dictionary<char, Sprite>();
@@ -15,18 +15,44 @@ public class FurGame : MonoBehaviour
         }
     }
     UI ui;
-    public void set_current_word(UI _ui){
-        remove_all_props();
-        ui = _ui;
-        string[] word_set = ui.pull_random_word_from_dict();
-        word_display.text = word_set[1];
-        int i = 0;
-        for(i = 0; i < word_set[0].Length; i++){
-            instantiate_alphabet(word_set[0][i] , i);
+    bool vocabulary_library_set = false;
+    List<string> vocabulary_library;
+    public void set_library(UI _ui , int start , int end){
+        if(vocabulary_library_set == false){
+            vocabulary_library_set = true;
+            ui = _ui;
+            vocabulary_library = ui.pull_words_from_dict(start , end);
         }
-        word_length = i;
-        for(int j = 0 ; j < word_set[0].Length; j++){
-            instantiate_alphabet_container(j , new Vector2(-(i - 1) * 0.64f + j * 1.28f , -3));
+        set_current_word();
+    }
+    int games_finished = 0 , games_needs_to_be_finished = 5;
+    public int _games_finished{
+        set{
+            games_finished = value;
+        }
+    }
+    void set_current_word(){
+        progress_bar.text = $"{games_finished}/{games_needs_to_be_finished}";
+        if(vocabulary_library.Count == 0){
+            //get next animal
+            vocabulary_library_set = false;
+            games_needs_to_be_finished = 30;
+            ui.close_fur_game();
+            return;
+        }
+        if(games_finished == games_needs_to_be_finished){
+            ui.close_fur_game();
+            return;
+        }
+        remove_all_props();
+        int random_number = Random.Range(0 , vocabulary_library.Count);
+        string[] word_set = {vocabulary_library[random_number] , ui.look_up_in_the_dictionary(vocabulary_library[random_number])};
+        vocabulary_library.Remove(vocabulary_library[random_number]);
+        word_display.text = word_set[1];
+        word_length = word_set[0].Length;
+        for(int i = 0; i < word_set[0].Length; i++){
+            instantiate_alphabet(word_set[0][i] , i);
+            instantiate_alphabet_container(i , new Vector2(-(word_length - 1) * 0.64f + i * 1.28f , -3));
         }
     }
     [SerializeField] GameObject bubble_alphabet;
@@ -57,7 +83,9 @@ public class FurGame : MonoBehaviour
     public void brush(){
         word_length--;
         if(word_length == 0){
-            ui.start_fur_game();
+            games_finished++;
+            set_current_word();
+            ui.set_fur_game_substate(0);
         }
     }
     private void OnDrawGizmos() {

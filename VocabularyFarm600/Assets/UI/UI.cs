@@ -45,12 +45,12 @@ public class UI : MonoBehaviour
             if(hit){
                 currently_interacting_animal = hit.transform.GetComponent<GiantAnimal>();
                 currently_interacting_animal.interact(this);
-                if(currently_interacting_animal.button_show == false){
+                if(currently_interacting_animal._button_show == false){
                     currently_interacting_animal.toggle_buttons();
                 }
             }
             else{
-                if(currently_interacting_animal != null && currently_interacting_animal.button_show){
+                if(currently_interacting_animal != null && currently_interacting_animal._button_show){
                     currently_interacting_animal.toggle_buttons();
                 }
                 currently_interacting_animal = null;
@@ -96,43 +96,57 @@ public class UI : MonoBehaviour
         fur_game_substate = state;
     }
     [SerializeField] GameObject main_screen_ui , game_screen_ui;
+    [SerializeField] Transform animal_container;
     void start_main_screen(){
+        close_care_screen();
         main_screen.SetActive(true);
         main_screen_ui.SetActive(true);
+        for(int i = 0; i < animal_container.childCount; i++){
+            animal_container.GetChild(i).GetComponent<GiantAnimal>().start_ai_activity();
+        }
     }
     void close_main_screen(){
         main_screen.SetActive(false);
         main_screen_ui.SetActive(false);
     }
     [SerializeField] GameObject care_screen;
-    public void toggle_care_screen(){
+    public void toggle_care_screen(GiantAnimal _game_animal){
         care_screen.SetActive(true);
+        game_animal = _game_animal;
     }
     public void close_care_screen(){
         care_screen.SetActive(false);
     }
     [SerializeField] GameObject main_screen;
     [SerializeField] GameObject fur_game_screen;
+    GiantAnimal game_animal;
     public void start_fur_game(){
         close_care_screen();
         close_main_screen();
         fur_game_screen.SetActive(true);
         game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0 , 0 , -10);
-        main_camera.orthographicSize = 4;
+        main_camera.orthographicSize = 5;
         control_mode = 2;
         fur_game_substate = 0;
         FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
-        game_ctl.set_current_word(this);
+        game_ctl.set_library(this , game_animal.first_word , game_animal.last_word);
     }
     public void close_fur_game(){
         fur_game_screen.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
+        fur_game_screen.GetComponent<FurGame>()._games_finished = 0;
     }
-    public string[] pull_random_word_from_dict(){
-        string random_word = vocabulary_eng[Random.Range(0 , vocabulary_eng.Length)];
-        return new string[2] {random_word , eng_to_cht_dict[random_word]};
+    public List<string> pull_words_from_dict(int start , int end){
+        List<string> vocabulary_library = new List<string>();
+        for(int i = start; i < end; i++){
+            vocabulary_library.Add(vocabulary_eng[i]);
+        }
+        return vocabulary_library;
+    }
+    public string look_up_in_the_dictionary(string eng){
+        return eng_to_cht_dict[eng];
     }
 }
