@@ -159,16 +159,6 @@ public class UI : MonoBehaviour
         control_mode = 0;
         fur_game_screen.GetComponent<FurGame>()._games_finished = 0;
     }
-    public List<string> pull_words_from_dict(int start , int end){
-        List<string> vocabulary_library = new List<string>();
-        for(int i = start; i < end; i++){
-            vocabulary_library.Add(vocabulary_eng[i]);
-        }
-        return vocabulary_library;
-    }
-    public string look_up_in_the_dictionary(string eng){
-        return eng_to_cht_dict[eng];
-    }
     [SerializeField] GameObject ballon_game_screen;
     public void start_ballon_game()
     {
@@ -179,6 +169,8 @@ public class UI : MonoBehaviour
         main_camera.transform.position = new Vector3(0, 0, -10);
         main_camera.orthographicSize = 5;
         control_mode = 3;
+        BallonGame game_ctl = ballon_game_screen.GetComponent<BallonGame>();
+        game_ctl.set_library(this , game_animal.first_word , game_animal.last_word);
     }
     void close_ballon_game()
     {
@@ -186,5 +178,15 @@ public class UI : MonoBehaviour
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
+    }
+    public List<string> pull_words_from_dict(int start , int end){
+        List<string> vocabulary_library = new List<string>();
+        for(int i = start; i < end; i++){
+            vocabulary_library.Add(vocabulary_eng[i]);
+        }
+        return vocabulary_library;
+    }
+    public string look_up_in_the_dictionary(string eng){
+        return eng_to_cht_dict[eng];
     }
 }
