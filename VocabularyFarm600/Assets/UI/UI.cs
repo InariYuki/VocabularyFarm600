@@ -34,7 +34,15 @@ public class UI : MonoBehaviour
             case 2:
                 fur_game_mode();
                 break;
+            case 3:
+                ballon_game_mode();
+                break;
         }
+    }
+    public void game_ui_exit_pressed()
+    {
+        close_fur_game();
+        close_ballon_game();
     }
     void navigation_mode(){
         if(Input.GetKeyDown(KeyCode.Mouse0)){
@@ -92,6 +100,18 @@ public class UI : MonoBehaviour
                 break;
         }
     }
+    Vector3 ballon_original_pos;
+    void ballon_game_mode()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            ballon_original_pos = main_camera.ScreenToWorldPoint(Input.mousePosition);
+        }
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            ballon_game_screen.GetComponent<BallonGame>().move_ballon(main_camera.ScreenToWorldPoint(Input.mousePosition));
+        }
+    }
     public void set_fur_game_substate(int state){
         fur_game_substate = state;
     }
@@ -126,7 +146,7 @@ public class UI : MonoBehaviour
         fur_game_screen.SetActive(true);
         game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0 , 0 , -10);
-        main_camera.orthographicSize = 5;
+        main_camera.orthographicSize = 6;
         control_mode = 2;
         fur_game_substate = 0;
         FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
@@ -148,5 +168,23 @@ public class UI : MonoBehaviour
     }
     public string look_up_in_the_dictionary(string eng){
         return eng_to_cht_dict[eng];
+    }
+    [SerializeField] GameObject ballon_game_screen;
+    public void start_ballon_game()
+    {
+        close_care_screen();
+        close_main_screen();
+        ballon_game_screen.SetActive(true);
+        game_screen_ui.SetActive(true);
+        main_camera.transform.position = new Vector3(0, 0, -10);
+        main_camera.orthographicSize = 5;
+        control_mode = 3;
+    }
+    void close_ballon_game()
+    {
+        ballon_game_screen.SetActive(false);
+        game_screen_ui.SetActive(false);
+        start_main_screen();
+        control_mode = 0;
     }
 }
