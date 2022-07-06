@@ -17,8 +17,10 @@ public class UI : MonoBehaviour
     }
     private void Update() {
         input_control();
+        main_camera.transform.position = new Vector3(Mathf.Clamp(main_camera.transform.position.x , -camera_clamp.x + main_camera.orthographicSize * main_camera.aspect , camera_clamp.x - main_camera.orthographicSize * main_camera.aspect) , Mathf.Clamp(main_camera.transform.position.y , -camera_clamp.y + main_camera.orthographicSize , camera_clamp.y - main_camera.orthographicSize) , -10);
     }
     public Camera main_camera;
+    Vector2 camera_clamp = new Vector2(48f , 27f);
     Canvas UI_canvas;
     Vector3 touch_point;
     GiantAnimal currently_interacting_animal;

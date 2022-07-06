@@ -9,13 +9,34 @@ public class GiantAnimal : MonoBehaviour
     public int first_word , last_word;
     UI interacter;
     Rigidbody2D rigid_body;
+    Animator animator;
+    SpriteRenderer sprite;
     Vector2 direction;
     public float speed;
     private void Awake() {
         rigid_body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
     }
     private void Start() {
         start_ai_activity();
+    }
+    int ai_state = 2; //0 = idle , 1 = move_mode 2 = stop
+    private void FixedUpdate() {
+        animation_ctl();
+        switch(ai_state){
+            case 0:
+                idle_mode();
+                break;
+            case 1:
+                move_mode();
+                break;
+            case 2:
+                direction = Vector2.zero;
+                break;
+            default:
+                break;
+        }
     }
     public void start_ai_activity(){
         StopAllCoroutines();
@@ -96,25 +117,31 @@ public class GiantAnimal : MonoBehaviour
         direction = (_target_position - feet.position).normalized;
         rigid_body.MovePosition(rigid_body.position + direction * speed * Time.deltaTime);
     }
+    void animation_ctl(){
+        sprite.sortingOrder = Mathf.RoundToInt(feet.position.y * 100);
+        if(direction != Vector2.zero){
+            if(Mathf.Abs(direction.x) >= 0.3f){
+                animator.SetFloat("Motion" , 0);
+                if(direction.x > 0){
+                    sprite.flipX = false;
+                }
+                else{
+                    sprite.flipX = true;
+                }
+            }
+            else{
+                if(direction.y > 0){
+                    animator.SetFloat("Motion" , 1);
+                }
+                else{
+                    animator.SetFloat("Motion" , 2);
+                }
+            }
+        }
+    }
     IEnumerator wait_for_random_walk(){
         yield return new WaitForSeconds(3f);
         idle_mode_init();
         enough_rest = false;
-    }
-    int ai_state = 2; //0 = idle , 1 = move_mode 2 = stop
-    private void FixedUpdate() {
-        switch(ai_state){
-            case 0:
-                idle_mode();
-                break;
-            case 1:
-                move_mode();
-                break;
-            case 2:
-                direction = Vector2.zero;
-                break;
-            default:
-                break;
-        }
     }
 }
