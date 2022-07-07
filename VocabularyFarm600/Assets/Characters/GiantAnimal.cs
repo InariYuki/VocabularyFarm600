@@ -118,26 +118,19 @@ public class GiantAnimal : MonoBehaviour
         rigid_body.MovePosition(rigid_body.position + direction * speed * Time.deltaTime);
     }
     void animation_ctl(){
-        sprite.sortingOrder = Mathf.RoundToInt(feet.position.y * 100);
+        sprite.sortingOrder = Mathf.RoundToInt(-feet.position.y * 100);
         if(direction != Vector2.zero){
             if(Mathf.Abs(direction.x) >= 0.3f){
                 animator.SetFloat("Motion" , 0);
-                if(direction.x > 0){
-                    sprite.flipX = false;
-                }
-                else{
-                    sprite.flipX = true;
-                }
+                if(direction.x > 0) sprite.flipX = false;
+                else sprite.flipX = true;
             }
             else{
-                if(direction.y > 0){
-                    animator.SetFloat("Motion" , 1);
-                }
-                else{
-                    animator.SetFloat("Motion" , 2);
-                }
+                if(direction.y > 0) animator.SetFloat("Motion" , 1);
+                else animator.SetFloat("Motion" , 2);
             }
         }
+        else animator.SetFloat("Motion" , 2);
     }
     IEnumerator wait_for_random_walk(){
         yield return new WaitForSeconds(3f);

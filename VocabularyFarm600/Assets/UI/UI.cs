@@ -15,6 +15,9 @@ public class UI : MonoBehaviour
             eng_to_cht_dict[vocabulary_eng[i]] = vocabulary_cht[i];
         }
     }
+    private void Start() {
+        add_building_button(carrot_house_button);
+    }
     private void Update() {
         input_control();
         main_camera.transform.position = new Vector3(Mathf.Clamp(main_camera.transform.position.x , -camera_clamp.x + main_camera.orthographicSize * main_camera.aspect , camera_clamp.x - main_camera.orthographicSize * main_camera.aspect) , Mathf.Clamp(main_camera.transform.position.y , -camera_clamp.y + main_camera.orthographicSize , camera_clamp.y - main_camera.orthographicSize) , -10);
@@ -39,7 +42,16 @@ public class UI : MonoBehaviour
             case 3:
                 ballon_game_mode();
                 break;
+            case 4:
+                build_mode();
+                break;
         }
+    }
+    [SerializeField] BuildingButton carrot_house_button;
+    [SerializeField] Transform building_button_container;
+    public void add_building_button(BuildingButton button){
+        BuildingButton button_instanced = Instantiate(button  , building_button_container.position , Quaternion.identity , building_button_container);
+        button_instanced.init(this);
     }
     public void game_ui_exit_pressed()
     {
@@ -54,9 +66,11 @@ public class UI : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f);
             if(hit){
                 currently_interacting_animal = hit.transform.GetComponent<GiantAnimal>();
-                currently_interacting_animal.interact(this);
-                if(currently_interacting_animal._button_show == false){
-                    currently_interacting_animal.toggle_buttons();
+                if(currently_interacting_animal != null){
+                    currently_interacting_animal.interact(this);
+                    if(currently_interacting_animal._button_show == false){
+                        currently_interacting_animal.toggle_buttons();
+                    }
                 }
             }
             else{
@@ -112,6 +126,14 @@ public class UI : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             ballon_game_screen.GetComponent<BallonGame>().move_ballon(main_camera.ScreenToWorldPoint(Input.mousePosition));
+        }
+    }
+    void build_mode(){
+        if(Input.GetKeyDown(KeyCode.Mouse0)){
+            RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f);
+            if(!hit && building != null && Input.mousePosition.y > 150f){
+                instantiate_building(main_camera.ScreenToWorldPoint(Input.mousePosition));
+            }
         }
     }
     public void set_fur_game_substate(int state){
@@ -180,6 +202,34 @@ public class UI : MonoBehaviour
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
+    }
+    [SerializeField] GameObject build_screen_ui;
+    [SerializeField] GameObject Grid_display;
+    [SerializeField] Transform building_container;
+    public void open_build_screen(){
+        main_screen_ui.SetActive(false);
+        build_screen_ui.SetActive(true);
+        Grid_display.SetActive(true);
+        for(int i = 0; i < building_container.childCount; i++){
+            building_container.GetChild(i).GetComponent<Building>().show_building_area();
+        }
+        control_mode = 4;
+    }
+    public void close_build_screen(){
+        main_screen_ui.SetActive(true);
+        build_screen_ui.SetActive(false);
+        Grid_display.SetActive(false);
+        for(int i = 0; i < building_container.childCount; i++){
+            building_container.GetChild(i).GetComponent<Building>().hide_building_area();
+        }
+        control_mode = 0;
+    }
+    GameObject building;
+    public void set_building(GameObject _building){
+        building = _building;
+    }
+    void instantiate_building(Vector2 pos){
+        Instantiate(building , pos , Quaternion.identity , building_container);
     }
     public List<string> pull_words_from_dict(int start , int end){
         List<string> vocabulary_library = new List<string>();
