@@ -11,6 +11,8 @@ public class UI : MonoBehaviour
     public string[] vocabulary_cht = new string[0];
     private void Awake() {
         UI_canvas = GetComponent<Canvas>();
+        animal_layer = LayerMask.GetMask("Animal");
+        building_layer = LayerMask.GetMask("Building");
         for(int i = 0; i < vocabulary_eng.Length ; i++){
             eng_to_cht_dict[vocabulary_eng[i]] = vocabulary_cht[i];
         }
@@ -28,6 +30,7 @@ public class UI : MonoBehaviour
     Vector3 touch_point;
     GiantAnimal currently_interacting_animal;
     public int control_mode = 0;
+    LayerMask animal_layer , building_layer;
     void input_control(){
         switch(control_mode){
             case 0:
@@ -63,7 +66,7 @@ public class UI : MonoBehaviour
             touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
         }
         else if(Input.GetKeyUp(KeyCode.Mouse0)){
-            RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f);
+            RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f , animal_layer);
             if(hit){
                 currently_interacting_animal = hit.transform.GetComponent<GiantAnimal>();
                 if(currently_interacting_animal != null){
@@ -128,12 +131,43 @@ public class UI : MonoBehaviour
             ballon_game_screen.GetComponent<BallonGame>().move_ballon(main_camera.ScreenToWorldPoint(Input.mousePosition));
         }
     }
+    int build_mode_substate = 0;
+    Building current_building;
     void build_mode(){
-        if(Input.GetKeyDown(KeyCode.Mouse0)){
-            RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f);
-            if(!hit && building != null && Input.mousePosition.y > 150f){
-                instantiate_building(main_camera.ScreenToWorldPoint(Input.mousePosition));
-            }
+        switch(build_mode_substate){
+            case 0:
+                if(Input.GetKeyDown(KeyCode.Mouse0)){
+                    RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f , building_layer);
+                    if(!hit && building != null && Input.mousePosition.y > 150f){
+                        Vector3 mouse_pos = main_camera.ScreenToWorldPoint(Input.mousePosition);
+                        instantiate_building(new Vector3(mouse_pos.x , mouse_pos.y , 0));
+                        build_mode_substate = 1;
+                    }
+                }
+                break;
+            case 1:
+                if(Input.GetKeyDown(KeyCode.Mouse0)){
+                    RaycastHit2D hit = Physics2D.Raycast(main_camera.ScreenToWorldPoint(Input.mousePosition) , Vector2.up , 0.001f , building_layer);
+                    if(hit){
+                        current_building = hit.transform.GetComponent<Building>();
+                        if(!current_building.can_be_moved){
+                            current_building = null;
+                            return;
+                        }
+                        current_building.show_button();
+                    }
+                    else{
+                        if(current_building != null){
+                            current_building.hide_button();
+                            current_building = null;
+                        }
+                    }
+                }
+                if(Input.GetKey(KeyCode.Mouse0) && current_building != null){
+                    Vector3 vec = main_camera.ScreenToWorldPoint(Input.mousePosition);
+                    current_building.transform.position = new Vector3(Mathf.RoundToInt(vec.x * 100 / 32) * 0.32f , Mathf.RoundToInt(vec.y * 100 / 32) * 0.32f);
+                }
+                break;
         }
     }
     public void set_fur_game_substate(int state){
@@ -214,6 +248,7 @@ public class UI : MonoBehaviour
             building_container.GetChild(i).GetComponent<Building>().show_building_area();
         }
         control_mode = 4;
+        build_mode_substate = 1;
     }
     public void close_build_screen(){
         main_screen_ui.SetActive(true);
@@ -227,6 +262,7 @@ public class UI : MonoBehaviour
     GameObject building;
     public void set_building(GameObject _building){
         building = _building;
+        build_mode_substate = 0;
     }
     void instantiate_building(Vector2 pos){
         Instantiate(building , pos , Quaternion.identity , building_container);

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6874728297930140823}
   - component: {fileID: 6874728297930140822}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SolidGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6874728299153164515}
   - component: {fileID: 6874728299153164524}
   - component: {fileID: 6874728299153164514}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HomeTree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   feet: {fileID: 6874728299196961121}
   building_grid: {fileID: 6874728297930140822}
+  sprite: {fileID: 6874728299153164515}
   size: {x: 2.56, y: 2.56}
+  green_grid: {fileID: 21300000, guid: d45a19567ca2c9648bd7dc1d1823bed0, type: 3}
+  red_grid: {fileID: 21300000, guid: 88b6a4a94b76fa04c9ae8ba21d943e20, type: 3}
 --- !u!61 &6874728299153164514
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -222,7 +225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6874728299196961121}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

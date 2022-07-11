@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 292447950567894389}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 292447950856582420}
   - component: {fileID: 292447950856582423}
   - component: {fileID: 292447950856582422}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Care
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,8 +67,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -121, y: -55.6}
-  m_SizeDelta: {x: 243.49, y: 53.41}
+  m_AnchoredPosition: {x: -60, y: -50}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &292447950856582420
 CanvasRenderer:
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 476e06095154ebe45b79d3e027eb8f54, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 292447950908857519}
   - component: {fileID: 292447950908857518}
   - component: {fileID: 292447950908857513}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ButtonHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 32767
   m_TargetDisplay: 0
 --- !u!114 &292447950908857518
 MonoBehaviour:
@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 292447951751952491}
   - component: {fileID: 292447951751952490}
   - component: {fileID: 292447951751952485}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Walk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,8 +302,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 123, y: -55.6}
-  m_SizeDelta: {x: 243.49, y: 53.41}
+  m_AnchoredPosition: {x: 60, y: -50}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &292447951751952491
 CanvasRenderer:
@@ -333,8 +333,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: a7cd95e012440484c9ee70e95026eb18, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 292447952342759490}
   - component: {fileID: 292447952342759491}
   - component: {fileID: 1587586839}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GRabbit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -478,12 +478,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -605740062, guid: afddd741715190b4eb3c11b33c279976, type: 3}
+  m_Sprite: {fileID: -1748153667, guid: a25749a5cb6d75f4ab9ad84e9d12b537, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 2.56, y: 2.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -523,8 +523,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.5616677, y: 2.56}
-    newSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 2.56, y: 2.5625}
+    newSize: {x: 2.56, y: 2.5625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
