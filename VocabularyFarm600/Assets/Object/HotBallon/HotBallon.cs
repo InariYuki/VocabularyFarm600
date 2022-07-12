@@ -6,7 +6,7 @@ using TMPro;
 public class HotBallon : MonoBehaviour
 {
     private void Awake() {
-        cloud_layer = LayerMask.GetMask("Walls");
+        cloud_layer = LayerMask.GetMask("Building");
     }
     private void FixedUpdate()
     {
@@ -27,8 +27,10 @@ public class HotBallon : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position , position , 2f * Time.deltaTime);
     }
     [SerializeField] TextMeshProUGUI ballon_text;
-    public void set_ballon_text(string text){
+    BallonGame game;
+    public void set_ballon_text(string text , BallonGame master_ctl){
         ballon_text.text = text;
+        game = master_ctl;
     }
     Vector3 detect_size = new Vector3(0.64f , 2.56f , 0);
     LayerMask cloud_layer;
@@ -40,6 +42,7 @@ public class HotBallon : MonoBehaviour
             cloud_script.destroy_whole_clouds();
         }
         else{
+            game.close_game();
             Destroy(gameObject);
         }
     }

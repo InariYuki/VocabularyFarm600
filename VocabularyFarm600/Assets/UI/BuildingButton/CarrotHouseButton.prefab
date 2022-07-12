@@ -214,10 +214,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u7D05\u7F85\u5C4B"
+  m_text: "\u863F\u8514\u5C4B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ba9f9804495affa4dad3b2231b4a5fbd, type: 2}
-  m_sharedMaterial: {fileID: -7514289948412163490, guid: ba9f9804495affa4dad3b2231b4a5fbd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 00352780acdd8b847a325d862ae90cc0, type: 2}
+  m_sharedMaterial: {fileID: 8909106550764027049, guid: 00352780acdd8b847a325d862ae90cc0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

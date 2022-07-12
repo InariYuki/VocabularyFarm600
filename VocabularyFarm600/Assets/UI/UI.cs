@@ -230,7 +230,7 @@ public class UI : MonoBehaviour
         BallonGame game_ctl = ballon_game_screen.GetComponent<BallonGame>();
         game_ctl.set_library(this , game_animal.first_word , game_animal.last_word);
     }
-    void close_ballon_game()
+    public void close_ballon_game()
     {
         ballon_game_screen.SetActive(false);
         game_screen_ui.SetActive(false);
