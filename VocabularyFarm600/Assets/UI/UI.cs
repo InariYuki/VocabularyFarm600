@@ -6,19 +6,15 @@ using TMPro;
 
 public class UI : MonoBehaviour
 {
-    Dictionary<string , string> eng_to_cht_dict = new Dictionary<string, string>();
-    public string[] vocabulary_eng = new string[0];
-    public string[] vocabulary_cht = new string[0];
+    [SerializeField] List<GiantAnimal> g_animals = new List<GiantAnimal>();
     private void Awake() {
         UI_canvas = GetComponent<Canvas>();
         animal_layer = LayerMask.GetMask("Animal");
         building_layer = LayerMask.GetMask("Building");
-        for(int i = 0; i < vocabulary_eng.Length ; i++){
-            eng_to_cht_dict[vocabulary_eng[i]] = vocabulary_cht[i];
-        }
     }
     private void Start() {
         add_building_button(carrot_house_button);
+        add_g_animal(g_animals[0]);
     }
     private void Update() {
         input_control();
@@ -55,6 +51,9 @@ public class UI : MonoBehaviour
     public void add_building_button(BuildingButton button){
         BuildingButton button_instanced = Instantiate(button  , building_button_container.position , Quaternion.identity , building_button_container);
         button_instanced.init(this);
+    }
+    public void add_g_animal(GiantAnimal animal){
+        Instantiate(animal , Vector3.zero , Quaternion.identity , animal_container);
     }
     public void game_ui_exit_pressed()
     {
@@ -119,16 +118,17 @@ public class UI : MonoBehaviour
                 break;
         }
     }
-    Vector3 ballon_original_pos;
+    Vector3 ballon_touch_point;
+    Vector3 move_vector;
     void ballon_game_mode()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            ballon_original_pos = main_camera.ScreenToWorldPoint(Input.mousePosition);
+        if(Input.GetKeyDown(KeyCode.Mouse0)){
+            ballon_touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
+            ballon_game_screen.set_ballon_origin();
         }
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            ballon_game_screen.GetComponent<BallonGame>().move_ballon(main_camera.ScreenToWorldPoint(Input.mousePosition));
+        if(Input.GetKey(KeyCode.Mouse0)){
+            move_vector = main_camera.ScreenToWorldPoint(Input.mousePosition) - ballon_touch_point;
+            ballon_game_screen.move_ballon(move_vector);
         }
     }
     int build_mode_substate = 0;
@@ -208,7 +208,7 @@ public class UI : MonoBehaviour
         control_mode = 2;
         fur_game_substate = 0;
         FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
-        game_ctl.set_library(this , game_animal.first_word , game_animal.last_word);
+        game_ctl.set_library(this , game_animal.vocabulary_eng , game_animal.eng_to_cht);
     }
     public void close_fur_game(){
         fur_game_screen.SetActive(false);
@@ -217,22 +217,21 @@ public class UI : MonoBehaviour
         control_mode = 0;
         fur_game_screen.GetComponent<FurGame>()._games_finished = 0;
     }
-    [SerializeField] GameObject ballon_game_screen;
+    [SerializeField] BallonGame ballon_game_screen;
     public void start_ballon_game()
     {
         close_care_screen();
         close_main_screen();
-        ballon_game_screen.SetActive(true);
+        ballon_game_screen.gameObject.SetActive(true);
         game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0, 0, -10);
         main_camera.orthographicSize = 5;
         control_mode = 3;
-        BallonGame game_ctl = ballon_game_screen.GetComponent<BallonGame>();
-        game_ctl.set_library(this , game_animal.first_word , game_animal.last_word);
+        ballon_game_screen.init(this , game_animal.vocabulary_eng , game_animal.eng_to_cht , game_animal.unfinished_eng);
     }
     public void close_ballon_game()
     {
-        ballon_game_screen.SetActive(false);
+        ballon_game_screen.gameObject.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
@@ -266,15 +265,5 @@ public class UI : MonoBehaviour
     }
     void instantiate_building(Vector2 pos){
         Instantiate(building , pos , Quaternion.identity , building_container);
-    }
-    public List<string> pull_words_from_dict(int start , int end){
-        List<string> vocabulary_library = new List<string>();
-        for(int i = start; i < end; i++){
-            vocabulary_library.Add(vocabulary_eng[i]);
-        }
-        return vocabulary_library;
-    }
-    public string look_up_in_the_dictionary(string eng){
-        return eng_to_cht_dict[eng];
     }
 }

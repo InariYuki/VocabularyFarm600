@@ -200,8 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b2804d2253c7d44bc7eca0b3b207c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  is_answer: 0
-  cloud_text_container: {fileID: 9087462486711484453}
+  text: {fileID: 9087462486711484453}
 --- !u!61 &9087462485179672262
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -327,8 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b2804d2253c7d44bc7eca0b3b207c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  is_answer: 0
-  cloud_text_container: {fileID: 9087462486407407296}
+  text: {fileID: 9087462486407407296}
 --- !u!61 &9087462485553481432
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -403,6 +401,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b1aecbd23cfe44cba78f9bf8efe1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clouds:
+  - {fileID: 9087462486603270452}
+  - {fileID: 9087462485179672257}
+  - {fileID: 9087462485553481435}
+  - {fileID: 9087462486537322426}
 --- !u!1 &9087462485657071593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,8 +1011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b2804d2253c7d44bc7eca0b3b207c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  is_answer: 0
-  cloud_text_container: {fileID: 9087462485657071599}
+  text: {fileID: 9087462485657071599}
 --- !u!61 &9087462486537322427
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1135,8 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b2804d2253c7d44bc7eca0b3b207c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  is_answer: 0
-  cloud_text_container: {fileID: 9087462486433519059}
+  text: {fileID: 9087462486433519059}
 --- !u!61 &9087462486603270453
 BoxCollider2D:
   m_ObjectHideFlags: 0

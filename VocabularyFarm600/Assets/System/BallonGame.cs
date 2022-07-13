@@ -5,58 +5,78 @@ using TMPro;
 
 public class BallonGame : MonoBehaviour
 {
-    UI ui;
-    List<string> word_library;
-    public void set_library(UI _ui , int first , int last){
-        ui = _ui;
-        if(word_library.Count == 0) word_library = ui.pull_words_from_dict(first , last);
-        set_four_words();
-    }
     [SerializeField] HotBallon ballon;
+    [SerializeField] CloudController cloud_cluster;
+    [SerializeField] Transform ballon_container , cloud_container;
     HotBallon ballon_instanced;
-    [SerializeField] CloudController cloud_ctl;
-    [SerializeField] Transform game_container;
-    CloudController cloud_ctl_instanced;
-    void instance_cloud(){
-        for(int i = 0 ; i < game_container.childCount; i++){
-            Destroy(game_container.GetChild(i).gameObject);
+    CloudController cloud_cluster_instanced;
+    UI ui;
+    List<string> word_library = new List<string>();
+    List<string> unfinished = new List<string>();
+    Dictionary<string , string> dictionary = new Dictionary<string, string>();
+    public void init(UI _ui , List<string> words , Dictionary<string , string> dict , List<string> unfinished_eng){
+        word_library.Clear();
+        unfinished.Clear();
+        dictionary.Clear();
+        progress.text = "完成 : 0/5";
+        ui = _ui;
+        word_library.AddRange(words);
+        for(int i = 0; i < words.Count; i++){
+            dictionary[words[i]] = dict[words[i]];
         }
-        cloud_ctl_instanced = Instantiate(cloud_ctl , new Vector3(1f , 3f , 0) , Quaternion.identity , game_container);
-        ballon_instanced = Instantiate(ballon , new Vector3(1.5f , -1.4f , 0) , Quaternion.identity , game_container);
+        unfinished.AddRange(unfinished_eng);
+        instance_ballon_and_cloud();
+        set_answer();
     }
-    public void move_ballon(Vector3 position)
-    {
-        ballon_instanced.set_position(position);
+    void instance_ballon_and_cloud(){
+        if(ballon_container.childCount == 0){
+            ballon_instanced = Instantiate(ballon , new Vector3(1.25f , -2f , 0) , Quaternion.identity , ballon_container);
+            ballon_instanced.init(this);
+        }
+        for(int i = 0; i < cloud_container.childCount; i++){
+            Destroy(cloud_container.GetChild(i).gameObject);
+        }
+        cloud_cluster_instanced = Instantiate(cloud_cluster , new Vector3(1.25f , 3.35f , 0) , Quaternion.identity , cloud_container);
+        cloud_cluster_instanced.init(this);
     }
-    void set_four_words(){
-        instance_cloud();
-        string word = word_library[Random.Range(0 , word_library.Count)];
-        string word_cht = ui.look_up_in_the_dictionary(word);
-        word_library.Remove(word);
-        ballon_instanced.set_ballon_text(word , this);
-        List<string> cache_wordlist = word_library;
-        List<string> random_words = new List<string>();
+    string eng_ans;
+    void set_answer(){
+        List<string> unfinished_cache = new List<string>();
+        List<string> word_library_cache = new List<string>();
+        unfinished_cache.AddRange(unfinished);
+        word_library_cache.AddRange(word_library);
+        int random_num = Random.Range(0 , unfinished_cache.Count);
+        eng_ans = unfinished_cache[random_num];
+        ballon_instanced.set_ballon_text(eng_ans);
+        string answer_cht = dictionary[eng_ans];
+        word_library_cache.Remove(eng_ans);
+        List<string> answers = new List<string>();
         for(int i = 0; i < 3; i++){
-            int random_int = Random.Range(0 , cache_wordlist.Count);
-            random_words.Add(ui.look_up_in_the_dictionary(cache_wordlist[random_int]));
-            cache_wordlist.Remove(cache_wordlist[random_int]);
+            int random_ans = Random.Range(0 , word_library_cache.Count);
+            answers.Add(dictionary[word_library_cache[random_ans]]);
+            word_library_cache.Remove(word_library_cache[random_ans]);
         }
-        random_words.Insert(Random.Range(0 , random_words.Count) , ui.look_up_in_the_dictionary(word));
-        cloud_ctl_instanced.set_answer(word_cht , random_words , this);
+        answers.Insert(Random.Range(0 , 2) , answer_cht);
+        cloud_cluster_instanced.set_cloud_text(answer_cht , answers);
     }
-    [SerializeField] TextMeshProUGUI progress_display;
+    [SerializeField] TextMeshProUGUI progress;
     int finished = 0;
-    public void set_progress(){
+    public void round_finished(){
+        unfinished.Remove(eng_ans);
         finished++;
-        progress_display.text = $"完成 : {finished}/5";
-        set_four_words();
-        if(finished == 5){
-            close_game();
-        }
+        progress.text = $"完成 : {finished}/5";
     }
-    public void close_game(){
-        finished = 0;
-        progress_display.text = $"完成 : 0/5";
-        ui.close_ballon_game();
+    public void game_failed(){
+        ballon_instanced = null;
+        print("LOL you lose");
+    }
+    Vector3 ballon_origin;
+    public void set_ballon_origin(){
+        if(ballon_instanced == null) return;
+        ballon_origin = ballon_instanced.transform.position;
+    }
+    public void move_ballon(Vector3 vec){
+        if(ballon_instanced == null) return;
+        ballon_instanced.move_to(ballon_origin + vec);
     }
 }

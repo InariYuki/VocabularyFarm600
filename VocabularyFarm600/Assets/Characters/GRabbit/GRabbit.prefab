@@ -503,8 +503,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button_holder: {fileID: 292447950908857515}
   feet: {fileID: 292447950567894389}
-  first_word: 0
-  last_word: 30
+  vocabulary_eng:
+  - apple
+  - banana
+  - candy
+  - dad
+  - elephant
+  vocabulary_cht:
+  - "\u860B\u679C"
+  - "\u9999\u8549"
+  - "\u7CD6\u679C"
+  - "\u7238\u7238"
+  - "\u5927\u8C61"
+  unfinished_eng: []
   speed: 3
 --- !u!61 &292447952342759490
 BoxCollider2D:

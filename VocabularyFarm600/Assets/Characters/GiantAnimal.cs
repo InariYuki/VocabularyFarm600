@@ -6,7 +6,10 @@ public class GiantAnimal : MonoBehaviour
 {
     [SerializeField] GameObject button_holder;
     [SerializeField] Transform feet;
-    public int first_word , last_word;
+    public List<string> vocabulary_eng = new List<string>();
+    public List<string> vocabulary_cht = new List<string>();
+    [HideInInspector] public Dictionary<string , string> eng_to_cht = new Dictionary<string, string>();
+    [HideInInspector] public List<string> unfinished_eng = new List<string>();
     UI interacter;
     Rigidbody2D rigid_body;
     Animator animator;
@@ -17,6 +20,10 @@ public class GiantAnimal : MonoBehaviour
         rigid_body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        for(int i = 0; i < vocabulary_eng.Count; i++){
+            eng_to_cht[vocabulary_eng[i]] = vocabulary_cht[i];
+        }
+        unfinished_eng.AddRange(vocabulary_eng);
     }
     private void Start() {
         start_ai_activity();

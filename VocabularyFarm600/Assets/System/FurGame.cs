@@ -9,6 +9,7 @@ public class FurGame : MonoBehaviour
     public Sprite[] alphabet_sprite = new Sprite[26];
     public char[] alphabet = new char[26];
     Dictionary<char , Sprite> char_to_instance_dict = new Dictionary<char, Sprite>();
+    Dictionary<string , string> dictionary = new Dictionary<string, string>();
     private void Awake() {
         for(int i = 0; i < alphabet_sprite.Length; i++){
             char_to_instance_dict[alphabet[i]] = alphabet_sprite[i];
@@ -16,12 +17,15 @@ public class FurGame : MonoBehaviour
     }
     UI ui;
     bool vocabulary_library_set = false;
-    List<string> vocabulary_library;
-    public void set_library(UI _ui , int start , int end){
+    List<string> vocabulary_library = new List<string>();
+    public void set_library(UI _ui , List<string> words , Dictionary<string , string> dict){
         if(vocabulary_library_set == false){
             vocabulary_library_set = true;
             ui = _ui;
-            vocabulary_library = ui.pull_words_from_dict(start , end);
+            vocabulary_library.AddRange(words);
+            for(int i = 0; i < dict.Count; i++){
+                dictionary[words[i]] = dict[words[i]];
+            }
         }
         set_current_word();
     }
@@ -46,7 +50,7 @@ public class FurGame : MonoBehaviour
         }
         remove_all_props();
         int random_number = Random.Range(0 , vocabulary_library.Count);
-        string[] word_set = {vocabulary_library[random_number] , ui.look_up_in_the_dictionary(vocabulary_library[random_number])};
+        string[] word_set = {vocabulary_library[random_number] , dictionary[vocabulary_library[random_number]]};
         vocabulary_library.Remove(vocabulary_library[random_number]);
         word_display.text = word_set[1];
         word_length = word_set[0].Length;

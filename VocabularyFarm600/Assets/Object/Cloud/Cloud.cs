@@ -6,14 +6,14 @@ using TMPro;
 public class Cloud : MonoBehaviour
 {
     [HideInInspector] public bool is_answer;
-    [SerializeField] TextMeshProUGUI cloud_text_container;
-    CloudController cloud_ctl;
-    public void set_word(string word , bool is_ans , CloudController ctl){
-        cloud_text_container.text = word;
-        is_answer = is_ans;
-        cloud_ctl = ctl;
+    [SerializeField] TextMeshProUGUI text;
+    CloudController master_ctl;
+    public void set_answer(string ans , bool _is_answer , CloudController parent){
+        text.text = ans;
+        is_answer = _is_answer;
+        master_ctl = parent;
     }
-    public void destroy_whole_clouds(){
-        cloud_ctl.destroy_self();
+    public void you_got_me(){
+        master_ctl.ans_correct();
     }
 }

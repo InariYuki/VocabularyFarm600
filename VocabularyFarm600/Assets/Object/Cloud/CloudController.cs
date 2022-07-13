@@ -5,15 +5,18 @@ using TMPro;
 
 public class CloudController : MonoBehaviour
 {
+    [SerializeField] List<Cloud> clouds = new List<Cloud>();
     BallonGame game;
-    public void set_answer(string ans_cht , List<string> cht_list , BallonGame master_ctl){
-        game = master_ctl;
-        for(int i = 0; i < transform.childCount; i++){
-            transform.GetChild(i).GetComponent<Cloud>().set_word(cht_list[i] , (ans_cht == cht_list[i]) , this);
+    public void init(BallonGame ctl){
+        game = ctl;
+    }
+    public void set_cloud_text(string answer , List<string> strings){
+        for(int i = 0; i < clouds.Count; i++){
+            clouds[i].set_answer(strings[i] , answer == strings[i] , this);
         }
     }
-    public void destroy_self(){
-        game.set_progress();
+    public void ans_correct(){
+        game.round_finished();
         Destroy(gameObject);
     }
 }

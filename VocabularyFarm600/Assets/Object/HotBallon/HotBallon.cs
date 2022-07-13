@@ -5,45 +5,40 @@ using TMPro;
 
 public class HotBallon : MonoBehaviour
 {
+    Vector3 move_pos;
+    LayerMask cloud_layermask;
+    BallonGame game;
     private void Awake() {
-        cloud_layer = LayerMask.GetMask("Building");
+        cloud_layermask = LayerMask.GetMask("Building");
     }
-    private void FixedUpdate()
-    {
-        movement();
-        detect_collision();
+    private void FixedUpdate() {
+        transform.position = Vector3.Lerp(transform.position , move_pos , Time.deltaTime * 5f);
+        detect_answer();
     }
-    private void OnDrawGizmos() {
-        Gizmos.color = new Color(1f , 0 , 0);
-        Gizmos.DrawWireCube(transform.position , detect_size);
+    public void init(BallonGame ctl){
+        game = ctl;
     }
-    Vector3 position;
-    public void set_position(Vector3 pos)
-    {
-        position = new Vector3(Mathf.Clamp(pos.x, -5f, 7f) , Mathf.Clamp(pos.y, -3f, 3f));
-    }
-    void movement()
-    {
-        transform.position = Vector3.Lerp(transform.position , position , 2f * Time.deltaTime);
+    public void move_to(Vector2 pos){
+        move_pos = pos;
     }
     [SerializeField] TextMeshProUGUI ballon_text;
-    BallonGame game;
-    public void set_ballon_text(string text , BallonGame master_ctl){
-        ballon_text.text = text;
-        game = master_ctl;
+    public void set_ballon_text(string question){
+        ballon_text.text = question;
     }
-    Vector3 detect_size = new Vector3(0.64f , 2.56f , 0);
-    LayerMask cloud_layer;
-    void detect_collision(){
-        Collider2D cloud = Physics2D.OverlapBox(transform.position , detect_size , 0 , cloud_layer);
-        if(cloud == null) return;
-        Cloud cloud_script = cloud.GetComponent<Cloud>();
-        if(cloud_script.is_answer){
-            cloud_script.destroy_whole_clouds();
+    void detect_answer(){
+        Collider2D col = Physics2D.OverlapCircle(transform.position , 1.28f , cloud_layermask);
+        if(col){
+            Cloud cloud_ramed = col.GetComponent<Cloud>();
+            if(cloud_ramed.is_answer){
+                cloud_ramed.you_got_me();
+            }
+            else{
+                pop();
+            }
         }
-        else{
-            game.close_game();
-            Destroy(gameObject);
-        }
+    }
+    void pop(){
+        game.game_failed();
+        Destroy(gameObject);
     }
 }
