@@ -17,11 +17,11 @@ public class Building : MonoBehaviour
         building_layer = LayerMask.GetMask("Building");
     }
     private void Start() {
-        sprite.sortingOrder = Mathf.RoundToInt(-feet.position.y * 100);
         collision.size = size;
         building_grid.size = size;
     }
     private void FixedUpdate() {
+        sprite.sortingOrder = Mathf.FloorToInt(-feet.position.y * 100);
         detect_collision();
     }
     public void show_building_area(){

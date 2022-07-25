@@ -9,6 +9,7 @@ public class FurGame : MonoBehaviour
     public Sprite[] alphabet_sprite = new Sprite[26];
     public char[] alphabet = new char[26];
     Dictionary<char , Sprite> char_to_instance_dict = new Dictionary<char, Sprite>();
+    List<string> vocabulary_library = new List<string>();
     Dictionary<string , string> dictionary = new Dictionary<string, string>();
     private void Awake() {
         for(int i = 0; i < alphabet_sprite.Length; i++){
@@ -17,35 +18,36 @@ public class FurGame : MonoBehaviour
     }
     UI ui;
     bool vocabulary_library_set = false;
-    List<string> vocabulary_library = new List<string>();
-    public void set_library(UI _ui , List<string> words , Dictionary<string , string> dict){
+    public void set_library(UI _ui , List<string> words , Dictionary<string , string> eng_to_cht_dict){
         if(vocabulary_library_set == false){
             vocabulary_library_set = true;
             ui = _ui;
             vocabulary_library.AddRange(words);
-            for(int i = 0; i < dict.Count; i++){
-                dictionary[words[i]] = dict[words[i]];
+            for(int i = 0; i < eng_to_cht_dict.Count; i++){
+                dictionary[words[i]] = eng_to_cht_dict[words[i]];
             }
         }
         set_current_word();
     }
-    int games_finished = 0 , games_needs_to_be_finished = 5;
-    public int _games_finished{
-        set{
-            games_finished = value;
-        }
-    }
+    [HideInInspector] public int _games_finished = 0 , games_needs_to_be_finished = 5;
+    List<string> words_finished = new List<string>();
+    Dictionary<string, int> word_to_times_spell = new Dictionary<string, int>();
+    //Dictionary<string, int> word_to_wrong_spell = new Dictionary<string, int>();
     void set_current_word(){
-        progress_bar.text = $"{games_finished}/{games_needs_to_be_finished}";
+        progress_bar.text = $"{_games_finished}/{games_needs_to_be_finished}";
         if(vocabulary_library.Count == 0){
             //get next animal
             vocabulary_library_set = false;
             games_needs_to_be_finished = 30;
-            ui.close_fur_game();
+            ui.close_fur_game(words_finished , word_to_times_spell);
+            words_finished.Clear();
+            word_to_times_spell.Clear();
             return;
         }
-        if(games_finished == games_needs_to_be_finished){
-            ui.close_fur_game();
+        if(_games_finished == games_needs_to_be_finished){
+            ui.close_fur_game(words_finished , word_to_times_spell);
+            words_finished.Clear();
+            word_to_times_spell.Clear();
             return;
         }
         remove_all_props();
@@ -87,7 +89,9 @@ public class FurGame : MonoBehaviour
     public void brush(){
         word_length--;
         if(word_length == 0){
-            games_finished++;
+            _games_finished++;
+            words_finished.Add(word_display.text);
+            word_to_times_spell[word_display.text] = 1;
             set_current_word();
             ui.set_fur_game_substate(0);
         }

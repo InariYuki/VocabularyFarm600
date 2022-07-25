@@ -9,6 +9,10 @@ public class GiantAnimal : MonoBehaviour
     public List<string> vocabulary_eng = new List<string>();
     public List<string> vocabulary_cht = new List<string>();
     [HideInInspector] public Dictionary<string , string> eng_to_cht = new Dictionary<string, string>();
+    [HideInInspector] public Dictionary<string , int> word_to_times_translation = new Dictionary<string, int>();
+    [HideInInspector] public Dictionary<string, int> word_to_wrong_translation = new Dictionary<string, int>();
+    [HideInInspector] public Dictionary<string, int> word_to_times_spell = new Dictionary<string, int>();
+    [HideInInspector] public Dictionary<string, int> word_to_wrong_spell = new Dictionary<string, int>();
     [HideInInspector] public List<string> unfinished_eng = new List<string>();
     UI interacter;
     Rigidbody2D rigid_body;
@@ -22,6 +26,10 @@ public class GiantAnimal : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         for(int i = 0; i < vocabulary_eng.Count; i++){
             eng_to_cht[vocabulary_eng[i]] = vocabulary_cht[i];
+            word_to_times_translation[vocabulary_eng[i]] = 0;
+            word_to_wrong_translation[vocabulary_eng[i]] = 0;
+            word_to_times_spell[vocabulary_eng[i]] = 0;
+            word_to_wrong_spell[vocabulary_eng[i]] = 0;
         }
         unfinished_eng.AddRange(vocabulary_eng);
     }

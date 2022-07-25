@@ -44,6 +44,8 @@ public class UI : MonoBehaviour
             case 4:
                 build_mode();
                 break;
+            default:
+                break;
         }
     }
     [SerializeField] BuildingButton carrot_house_button;
@@ -57,7 +59,7 @@ public class UI : MonoBehaviour
     }
     public void game_ui_exit_pressed()
     {
-        close_fur_game();
+        close_fur_game(null , null);
         close_ballon_game();
     }
     void navigation_mode(){
@@ -188,12 +190,47 @@ public class UI : MonoBehaviour
         main_screen_ui.SetActive(false);
     }
     [SerializeField] GameObject care_screen;
+    [SerializeField] Transform translation_score , spell_score;
     public void toggle_care_screen(GiantAnimal _game_animal){
         care_screen.SetActive(true);
+        main_screen_ui.SetActive(false);
         game_animal = _game_animal;
+        control_mode = 99;
+        display_score(translation_score , game_animal);
+        display_score(spell_score , game_animal);
     }
     public void close_care_screen(){
         care_screen.SetActive(false);
+        main_screen_ui.SetActive(true);
+        control_mode = 0;
+    }
+    void display_score(Transform score_board , GiantAnimal animal)
+    {
+        for(int i = 0; i < animal.vocabulary_eng.Count; i++)
+        {
+            Transform word_display = score_board.GetChild(i);
+            if(score_board == translation_score)
+            {
+                word_display.GetChild(0).GetComponent<TextMeshProUGUI>().text = animal.vocabulary_eng[i].ToString();
+                word_display.GetChild(1).GetComponent<TextMeshProUGUI>().text = animal.word_to_times_translation[animal.vocabulary_eng[i]].ToString();
+                word_display.GetChild(2).GetComponent<TextMeshProUGUI>().text = animal.word_to_wrong_translation[animal.vocabulary_eng[i]] + "%";
+            }
+            else
+            {
+                word_display.GetChild(0).GetComponent<TextMeshProUGUI>().text = animal.vocabulary_eng[i].ToString();
+                word_display.GetChild(1).GetComponent<TextMeshProUGUI>().text = animal.word_to_times_spell[animal.vocabulary_eng[i]].ToString();
+                word_display.GetChild(2).GetComponent<TextMeshProUGUI>().text = animal.word_to_wrong_spell[animal.vocabulary_eng[i]] + "%";
+            }
+        }
+    }
+    [SerializeField] GameObject spell_score_panel;
+    public void toggle_spell_score_panel()
+    {
+        spell_score_panel.SetActive(true);
+    }
+    public void close_spell_score_panel()
+    {
+        spell_score_panel.SetActive(false);
     }
     [SerializeField] GameObject main_screen;
     [SerializeField] GameObject fur_game_screen;
@@ -210,12 +247,20 @@ public class UI : MonoBehaviour
         FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
         game_ctl.set_library(this , game_animal.vocabulary_eng , game_animal.eng_to_cht);
     }
-    public void close_fur_game(){
+    public void close_fur_game(List<string> words_finished , Dictionary<string , int> word_to_times_spell){
         fur_game_screen.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
         fur_game_screen.GetComponent<FurGame>()._games_finished = 0;
+        if(words_finished != null && word_to_times_spell != null)
+        {
+            for(int i = 0; i < words_finished.Count; i++)
+            {
+                game_animal.unfinished_eng.Remove(words_finished[i]);
+                game_animal.word_to_times_spell[words_finished[i]] += word_to_times_spell[words_finished[i]];
+            }
+        }
     }
     [SerializeField] BallonGame ballon_game_screen;
     public void start_ballon_game()

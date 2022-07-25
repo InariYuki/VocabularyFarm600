@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 6874728299153164515}
   - component: {fileID: 6874728299153164524}
   - component: {fileID: 6874728299153164514}
+  - component: {fileID: 7950192239512422925}
   m_Layer: 7
   m_Name: HomeTree
   m_TagString: Untagged
@@ -190,6 +191,8 @@ MonoBehaviour:
   size: {x: 2.56, y: 2.56}
   green_grid: {fileID: 21300000, guid: d45a19567ca2c9648bd7dc1d1823bed0, type: 3}
   red_grid: {fileID: 21300000, guid: 88b6a4a94b76fa04c9ae8ba21d943e20, type: 3}
+  building_canvas: {fileID: 0}
+  can_be_moved: 1
 --- !u!61 &6874728299153164514
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -216,6 +219,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 2.56}
   m_EdgeRadius: 0
+--- !u!95 &7950192239512422925
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874728299153164526}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4a0c03580c73da649aa0383be140f50c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6874728299196961122
 GameObject:
   m_ObjectHideFlags: 0
