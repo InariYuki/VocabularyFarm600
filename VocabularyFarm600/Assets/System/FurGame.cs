@@ -31,7 +31,7 @@ public class FurGame : MonoBehaviour
     }
     [HideInInspector] public int _games_finished = 0 , games_needs_to_be_finished = 5;
     List<string> words_finished = new List<string>();
-    Dictionary<string, int> word_to_times_spell = new Dictionary<string, int>();
+    string current_word;
     //Dictionary<string, int> word_to_wrong_spell = new Dictionary<string, int>();
     void set_current_word(){
         progress_bar.text = $"{_games_finished}/{games_needs_to_be_finished}";
@@ -39,21 +39,20 @@ public class FurGame : MonoBehaviour
             //get next animal
             vocabulary_library_set = false;
             games_needs_to_be_finished = 30;
-            ui.close_fur_game(words_finished , word_to_times_spell);
+            ui.close_fur_game(words_finished);
             words_finished.Clear();
-            word_to_times_spell.Clear();
             return;
         }
         if(_games_finished == games_needs_to_be_finished){
-            ui.close_fur_game(words_finished , word_to_times_spell);
+            ui.close_fur_game(words_finished);
             words_finished.Clear();
-            word_to_times_spell.Clear();
             return;
         }
         remove_all_props();
         int random_number = Random.Range(0 , vocabulary_library.Count);
         string[] word_set = {vocabulary_library[random_number] , dictionary[vocabulary_library[random_number]]};
-        vocabulary_library.Remove(vocabulary_library[random_number]);
+        current_word = vocabulary_library[random_number];
+        vocabulary_library.Remove(current_word);
         word_display.text = word_set[1];
         word_length = word_set[0].Length;
         for(int i = 0; i < word_set[0].Length; i++){
@@ -90,8 +89,7 @@ public class FurGame : MonoBehaviour
         word_length--;
         if(word_length == 0){
             _games_finished++;
-            words_finished.Add(word_display.text);
-            word_to_times_spell[word_display.text] = 1;
+            words_finished.Add(current_word);
             set_current_word();
             ui.set_fur_game_substate(0);
         }

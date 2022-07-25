@@ -59,7 +59,7 @@ public class UI : MonoBehaviour
     }
     public void game_ui_exit_pressed()
     {
-        close_fur_game(null , null);
+        close_fur_game(null);
         close_ballon_game();
     }
     void navigation_mode(){
@@ -247,18 +247,18 @@ public class UI : MonoBehaviour
         FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
         game_ctl.set_library(this , game_animal.vocabulary_eng , game_animal.eng_to_cht);
     }
-    public void close_fur_game(List<string> words_finished , Dictionary<string , int> word_to_times_spell){
+    public void close_fur_game(List<string> words_finished){
         fur_game_screen.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
         fur_game_screen.GetComponent<FurGame>()._games_finished = 0;
-        if(words_finished != null && word_to_times_spell != null)
+        if(words_finished != null)
         {
             for(int i = 0; i < words_finished.Count; i++)
             {
                 game_animal.unfinished_eng.Remove(words_finished[i]);
-                game_animal.word_to_times_spell[words_finished[i]] += word_to_times_spell[words_finished[i]];
+                game_animal.word_to_times_spell[words_finished[i]] += 1;
             }
         }
     }
