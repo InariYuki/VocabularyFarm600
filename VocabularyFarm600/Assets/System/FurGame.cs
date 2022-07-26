@@ -17,37 +17,35 @@ public class FurGame : MonoBehaviour
         }
     }
     UI ui;
-    bool vocabulary_library_set = false;
     public void set_library(UI _ui , List<string> words , Dictionary<string , string> eng_to_cht_dict){
-        if(vocabulary_library_set == false){
-            vocabulary_library_set = true;
-            ui = _ui;
-            vocabulary_library.AddRange(words);
-            for(int i = 0; i < eng_to_cht_dict.Count; i++){
-                dictionary[words[i]] = eng_to_cht_dict[words[i]];
-            }
+        ui = _ui;
+        vocabulary_library.Clear();
+        vocabulary_library.AddRange(words);
+        for(int i = 0; i < words.Count; i++){
+            dictionary[words[i]] = eng_to_cht_dict[words[i]];
         }
         set_current_word();
     }
     [HideInInspector] public int _games_finished = 0 , games_needs_to_be_finished = 5;
     List<string> words_finished = new List<string>();
+    List<string> words_failed = new List<string>();
     string current_word;
-    //Dictionary<string, int> word_to_wrong_spell = new Dictionary<string, int>();
     void set_current_word(){
-        progress_bar.text = $"{_games_finished}/{games_needs_to_be_finished}";
         if(vocabulary_library.Count == 0){
-            //get next animal
-            vocabulary_library_set = false;
-            games_needs_to_be_finished = 30;
-            ui.close_fur_game(words_finished);
+            //current animal finished !
+            ui.close_fur_game(words_finished , words_failed);
             words_finished.Clear();
+            words_failed.Clear();
             return;
         }
         if(_games_finished == games_needs_to_be_finished){
-            ui.close_fur_game(words_finished);
+            ui.close_fur_game(words_finished , words_failed);
+            words_finished.Clear();
             words_finished.Clear();
             return;
         }
+        start_timer();
+        progress_bar.text = $"{_games_finished}/{games_needs_to_be_finished}";
         remove_all_props();
         int random_number = Random.Range(0 , vocabulary_library.Count);
         string[] word_set = {vocabulary_library[random_number] , dictionary[vocabulary_library[random_number]]};
@@ -94,7 +92,36 @@ public class FurGame : MonoBehaviour
             ui.set_fur_game_substate(0);
         }
     }
-    private void OnDrawGizmos() {
-        Gizmos.DrawWireCube(transform.position , new Vector2(16 , 9));
+    [SerializeField] TextMeshProUGUI timer_display;
+    float time = 30f;
+    float time_interval = 0.02f;
+    Coroutine current_coroutine;
+    void timer()
+    {
+        if(time >= 0)
+        {
+            time -= time_interval;
+            timer_display.text = "Time : " + time.ToString("0.00");
+            current_coroutine = StartCoroutine(timer_interval());
+        }
+        else
+        {
+            _games_finished++;
+            words_finished.Add(current_word);
+            words_failed.Add(current_word);
+            set_current_word();
+            ui.set_fur_game_substate(0);
+        }
+    }
+    IEnumerator timer_interval()
+    {
+        yield return new WaitForSeconds(time_interval);
+        timer();
+    }
+    void start_timer()
+    {
+        if(current_coroutine != null) StopCoroutine(current_coroutine);
+        time = 30f;
+        timer();
     }
 }

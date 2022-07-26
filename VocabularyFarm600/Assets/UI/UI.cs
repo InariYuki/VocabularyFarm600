@@ -8,7 +8,6 @@ public class UI : MonoBehaviour
 {
     [SerializeField] List<GiantAnimal> g_animals = new List<GiantAnimal>();
     private void Awake() {
-        UI_canvas = GetComponent<Canvas>();
         animal_layer = LayerMask.GetMask("Animal");
         building_layer = LayerMask.GetMask("Building");
     }
@@ -22,7 +21,6 @@ public class UI : MonoBehaviour
     }
     public Camera main_camera;
     Vector2 camera_clamp = new Vector2(48f , 27f);
-    Canvas UI_canvas;
     Vector3 touch_point;
     GiantAnimal currently_interacting_animal;
     public int control_mode = 0;
@@ -59,7 +57,7 @@ public class UI : MonoBehaviour
     }
     public void game_ui_exit_pressed()
     {
-        close_fur_game(null);
+        close_fur_game(null , null);
         close_ballon_game();
     }
     void navigation_mode(){
@@ -213,13 +211,13 @@ public class UI : MonoBehaviour
             {
                 word_display.GetChild(0).GetComponent<TextMeshProUGUI>().text = animal.vocabulary_eng[i].ToString();
                 word_display.GetChild(1).GetComponent<TextMeshProUGUI>().text = animal.word_to_times_translation[animal.vocabulary_eng[i]].ToString();
-                word_display.GetChild(2).GetComponent<TextMeshProUGUI>().text = animal.word_to_wrong_translation[animal.vocabulary_eng[i]] + "%";
+                word_display.GetChild(2).GetComponent<TextMeshProUGUI>().text = animal.word_to_wrong_translation[animal.vocabulary_eng[i]] * 100 / ((animal.word_to_times_translation[animal.vocabulary_eng[i]] == 0) ? 1 : animal.word_to_times_translation[animal.vocabulary_eng[i]])  + "%";
             }
             else
             {
                 word_display.GetChild(0).GetComponent<TextMeshProUGUI>().text = animal.vocabulary_eng[i].ToString();
                 word_display.GetChild(1).GetComponent<TextMeshProUGUI>().text = animal.word_to_times_spell[animal.vocabulary_eng[i]].ToString();
-                word_display.GetChild(2).GetComponent<TextMeshProUGUI>().text = animal.word_to_wrong_spell[animal.vocabulary_eng[i]] + "%";
+                word_display.GetChild(2).GetComponent<TextMeshProUGUI>().text = animal.word_to_wrong_spell[animal.vocabulary_eng[i]] * 100 / ((animal.word_to_times_spell[animal.vocabulary_eng[i]] == 0) ? 1 : animal.word_to_times_spell[animal.vocabulary_eng[i]]) + "%";
             }
         }
     }
@@ -245,9 +243,9 @@ public class UI : MonoBehaviour
         control_mode = 2;
         fur_game_substate = 0;
         FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
-        game_ctl.set_library(this , game_animal.vocabulary_eng , game_animal.eng_to_cht);
+        game_ctl.set_library(this , (game_animal.unfinished_eng_spell.Count == 0) ? game_animal.vocabulary_eng : game_animal.unfinished_eng_spell , game_animal.eng_to_cht);
     }
-    public void close_fur_game(List<string> words_finished){
+    public void close_fur_game(List<string> words_finished , List<string> words_failed){
         fur_game_screen.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
@@ -257,8 +255,15 @@ public class UI : MonoBehaviour
         {
             for(int i = 0; i < words_finished.Count; i++)
             {
-                game_animal.unfinished_eng.Remove(words_finished[i]);
+                if(!words_failed.Contains(words_finished[i]))
+                {
+                    game_animal.unfinished_eng_spell.Remove(words_finished[i]);
+                }
                 game_animal.word_to_times_spell[words_finished[i]] += 1;
+            }
+            for(int i = 0; i < words_failed.Count; i++)
+            {
+                game_animal.word_to_wrong_spell[words_failed[i]] += 1;
             }
         }
     }
@@ -272,7 +277,7 @@ public class UI : MonoBehaviour
         main_camera.transform.position = new Vector3(0, 0, -10);
         main_camera.orthographicSize = 5;
         control_mode = 3;
-        ballon_game_screen.init(this , game_animal.vocabulary_eng , game_animal.eng_to_cht , game_animal.unfinished_eng);
+        ballon_game_screen.init(this , game_animal.vocabulary_eng , game_animal.eng_to_cht , game_animal.unfinished_eng_translation);
     }
     public void close_ballon_game()
     {
