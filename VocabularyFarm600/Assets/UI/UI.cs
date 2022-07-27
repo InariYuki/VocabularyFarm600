@@ -222,13 +222,19 @@ public class UI : MonoBehaviour
         }
     }
     [SerializeField] GameObject spell_score_panel;
+    [SerializeField] Image translate_button_image , spell_button_image;
+    [SerializeField] Sprite unclicked , clicked;
     public void toggle_spell_score_panel()
     {
         spell_score_panel.SetActive(true);
+        spell_button_image.sprite = clicked;
+        translate_button_image.sprite = unclicked;
     }
     public void close_spell_score_panel()
     {
         spell_score_panel.SetActive(false);
+        spell_button_image.sprite = unclicked;
+        translate_button_image.sprite = clicked;
     }
     [SerializeField] GameObject main_screen;
     [SerializeField] GameObject fur_game_screen;
