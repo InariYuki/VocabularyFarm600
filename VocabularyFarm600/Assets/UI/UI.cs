@@ -58,7 +58,7 @@ public class UI : MonoBehaviour
     public void game_ui_exit_pressed()
     {
         close_fur_game(null , null);
-        close_ballon_game();
+        close_ballon_game(null , null);
     }
     void navigation_mode(){
         if(Input.GetKeyDown(KeyCode.Mouse0)){
@@ -286,12 +286,23 @@ public class UI : MonoBehaviour
         control_mode = 3;
         ballon_game_screen.set_parameters(this , (game_animal.unfinished_eng_translation.Count == 0) ? game_animal.vocabulary_eng : game_animal.unfinished_eng_translation , game_animal.eng_to_cht , game_animal.vocabulary_eng);
     }
-    public void close_ballon_game()
+    public void close_ballon_game(List<string> words_done , List<string> words_wrong)
     {
         ballon_game_screen.gameObject.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
+        if(words_done != null){
+            for(int i = 0; i < words_done.Count; i++){
+                game_animal.word_to_times_translation[words_done[i]] += 1;
+                if(!words_wrong.Contains(words_done[i])){
+                    game_animal.unfinished_eng_translation.Remove(words_done[i]);
+                }
+            }
+            for(int i = 0; i < words_wrong.Count; i++){
+                game_animal.word_to_wrong_translation[words_wrong[i]] += 1;
+            }
+        }
     }
     [SerializeField] GameObject build_screen_ui;
     [SerializeField] GameObject Grid_display;

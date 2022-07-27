@@ -9,6 +9,7 @@ public class Cloud : MonoBehaviour
     [SerializeField] List<Sprite> cloud_sprites = new List<Sprite>();
     SpriteRenderer sprite;
     LayerMask ballon_layer;
+    BallonGame game;
     bool is_answer;
     private void Awake() {
         sprite = GetComponent<SpriteRenderer>();
@@ -16,18 +17,33 @@ public class Cloud : MonoBehaviour
     }
     private void FixedUpdate() {
         detect_answer();
+        move_down();
     }
-    public void set_answer(string ans , bool _is_answer){
+    public void set_answer(BallonGame _game , string ans , bool _is_answer){
+        game = _game;
         sprite.sprite = cloud_sprites[Random.Range(0 , cloud_sprites.Count)];
         text.text = ans;
         is_answer = _is_answer;
     }
     float radius = 0.5f;
+    [SerializeField] GameObject mow_tree;
     void detect_answer(){
-        if(transform.position.y < -1f) return;
+        if(transform.position.y < -3f || !is_answer) return;
         Collider2D ballon = Physics2D.OverlapCircle(transform.position , radius , ballon_layer);
-        if(ballon != null && is_answer){
-            print("correct !");
+        if(ballon != null){
+            is_answer = false;
+            mow_tree.SetActive(true);
+            game.set_answer_right();
         }
+    }
+    [HideInInspector] public bool can_move = false;
+    void move_down(){
+        if(!can_move) return;
+        if(transform.position.y < -12f){
+            mow_tree.SetActive(false);
+            game.check_all_cloud_bottom();
+            can_move = false;
+        }
+        transform.position -= new Vector3(0 , 0.08f , 0);
     }
 }
