@@ -24,6 +24,7 @@ public class FurGame : MonoBehaviour
         for(int i = 0; i < words.Count; i++){
             dictionary[words[i]] = eng_to_cht_dict[words[i]];
         }
+        create_tangled_fur();
         set_current_word();
     }
     [HideInInspector] public int _games_finished = 0 , games_needs_to_be_finished = 5;
@@ -88,6 +89,7 @@ public class FurGame : MonoBehaviour
         if(word_length == 0){
             _games_finished++;
             words_finished.Add(current_word);
+            resolve_tangled_furs();
             set_current_word();
             ui.set_fur_game_substate(0);
         }
@@ -123,5 +125,22 @@ public class FurGame : MonoBehaviour
         if(current_coroutine != null) StopCoroutine(current_coroutine);
         time = 30f;
         timer();
+    }
+    [SerializeField] List<TangledFur> furs = new List<TangledFur>();
+    List<TangledFur> tangled_furs = new List<TangledFur>();
+    void create_tangled_fur(){
+        for(int i = 0; i < vocabulary_library.Count; i++){
+            furs[i].reset_opacity();
+            tangled_furs.Add(furs[i]);
+        }
+    }
+    void resolve_tangled_furs(){
+        int random_number = Random.Range(0 , tangled_furs.Count);
+        tangled_furs[random_number].fade_out();
+        tangled_furs.Remove(tangled_furs[random_number]);
+    }
+    [SerializeField] Transform comb;
+    public void set_comb_position(Vector2 pos){
+        comb.position = pos;
     }
 }

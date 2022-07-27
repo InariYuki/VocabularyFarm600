@@ -100,6 +100,7 @@ public class UI : MonoBehaviour
         switch(fur_game_substate){
             case 0:
                 if(Input.GetKey(KeyCode.Mouse0)){
+                    fur_game.set_comb_position(main_camera.ScreenToWorldPoint(Input.mousePosition));
                     Collider2D[] alphabets = Physics2D.OverlapCircleAll(main_camera.ScreenToWorldPoint(Input.mousePosition) , radius);
                     for(int i = 0; i < alphabets.Length; i++){
                         BubbleAlphabet alphabet = alphabets[i].GetComponent<BubbleAlphabet>();
@@ -109,6 +110,7 @@ public class UI : MonoBehaviour
                 break;
             case 1:
                 if(Input.GetKey(KeyCode.Mouse0)){
+                    fur_game.set_comb_position(main_camera.ScreenToWorldPoint(Input.mousePosition));
                     Collider2D[] alphabet_containers = Physics2D.OverlapCircleAll(main_camera.ScreenToWorldPoint(Input.mousePosition) , radius);
                     for(int i = 0; i < alphabet_containers.Length; i++){
                         AlphabetContainer alphabet_container = alphabet_containers[i].GetComponent<AlphabetContainer>();
@@ -237,26 +239,25 @@ public class UI : MonoBehaviour
         translate_button_image.sprite = clicked;
     }
     [SerializeField] GameObject main_screen;
-    [SerializeField] GameObject fur_game_screen;
+    [SerializeField] FurGame fur_game;
     GiantAnimal game_animal;
     public void start_fur_game(){
         close_care_screen();
         close_main_screen();
-        fur_game_screen.SetActive(true);
+        fur_game.gameObject.SetActive(true);
         game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0 , 0 , -10);
         main_camera.orthographicSize = 6;
         control_mode = 2;
         fur_game_substate = 0;
-        FurGame game_ctl = fur_game_screen.GetComponent<FurGame>();
-        game_ctl.set_library(this , (game_animal.unfinished_eng_spell.Count == 0) ? game_animal.vocabulary_eng : game_animal.unfinished_eng_spell , game_animal.eng_to_cht);
+        fur_game.set_library(this , (game_animal.unfinished_eng_spell.Count == 0) ? game_animal.vocabulary_eng : game_animal.unfinished_eng_spell , game_animal.eng_to_cht);
     }
     public void close_fur_game(List<string> words_finished , List<string> words_failed){
-        fur_game_screen.SetActive(false);
+        fur_game.gameObject.SetActive(false);
         game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
-        fur_game_screen.GetComponent<FurGame>()._games_finished = 0;
+        fur_game._games_finished = 0;
         if(words_finished != null)
         {
             for(int i = 0; i < words_finished.Count; i++)
@@ -281,9 +282,9 @@ public class UI : MonoBehaviour
         ballon_game_screen.gameObject.SetActive(true);
         game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0, 0, -10);
-        main_camera.orthographicSize = 5;
+        main_camera.orthographicSize = 6;
         control_mode = 3;
-        ballon_game_screen.init(this , game_animal.vocabulary_eng , game_animal.eng_to_cht , game_animal.unfinished_eng_translation);
+        ballon_game_screen.set_parameters(this , (game_animal.unfinished_eng_translation.Count == 0) ? game_animal.vocabulary_eng : game_animal.unfinished_eng_translation , game_animal.eng_to_cht , game_animal.vocabulary_eng);
     }
     public void close_ballon_game()
     {
