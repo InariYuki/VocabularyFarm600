@@ -6,6 +6,7 @@ using TMPro;
 public class FurGame : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI word_display , progress_bar;
+    [SerializeField] GameObject popup;
     public Sprite[] alphabet_sprite = new Sprite[26];
     public char[] alphabet = new char[26];
     Dictionary<char , Sprite> char_to_instance_dict = new Dictionary<char, Sprite>();
@@ -18,6 +19,8 @@ public class FurGame : MonoBehaviour
     }
     UI ui;
     public void set_library(UI _ui , List<string> words , Dictionary<string , string> eng_to_cht_dict){
+        popup.SetActive(false);
+        exit_popup.SetActive(false);
         ui = _ui;
         vocabulary_library.Clear();
         vocabulary_library.AddRange(words);
@@ -34,15 +37,11 @@ public class FurGame : MonoBehaviour
     void set_current_word(){
         if(vocabulary_library.Count == 0){
             //current animal finished !
-            ui.close_fur_game(words_finished , words_failed);
-            words_finished.Clear();
-            words_failed.Clear();
+            popup.SetActive(true);
             return;
         }
         if(_games_finished == games_needs_to_be_finished){
-            ui.close_fur_game(words_finished , words_failed);
-            words_finished.Clear();
-            words_finished.Clear();
+            popup.SetActive(true);
             return;
         }
         start_timer();
@@ -58,6 +57,18 @@ public class FurGame : MonoBehaviour
             instantiate_alphabet(word_set[0][i] , i);
             instantiate_alphabet_container(i , new Vector2(-(word_length - 1) * 0.64f + i * 1.28f , -3));
         }
+    }
+    [SerializeField] GameObject exit_popup;
+    public void ReturnButtonPressed(){
+        exit_popup.SetActive(true);
+    }
+    public void ResumeButtonPressed(){
+        exit_popup.SetActive(false);
+    }
+    public void CloseFurGame(){
+        ui.close_fur_game(words_finished , words_failed);
+        words_finished.Clear();
+        words_failed.Clear();
     }
     [SerializeField] GameObject bubble_alphabet;
     [SerializeField] Transform game_container;

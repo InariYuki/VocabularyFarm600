@@ -57,7 +57,6 @@ public class UI : MonoBehaviour
     }
     public void game_ui_exit_pressed()
     {
-        close_fur_game(null , null);
         close_ballon_game(null , null);
     }
     void navigation_mode(){
@@ -175,7 +174,7 @@ public class UI : MonoBehaviour
     public void set_fur_game_substate(int state){
         fur_game_substate = state;
     }
-    [SerializeField] GameObject main_screen_ui , game_screen_ui;
+    [SerializeField] GameObject main_screen_ui;
     [SerializeField] Transform animal_container;
     void start_main_screen(){
         close_care_screen();
@@ -245,7 +244,6 @@ public class UI : MonoBehaviour
         close_care_screen();
         close_main_screen();
         fur_game.gameObject.SetActive(true);
-        game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0 , 0 , -10);
         main_camera.orthographicSize = 6;
         control_mode = 2;
@@ -254,7 +252,6 @@ public class UI : MonoBehaviour
     }
     public void close_fur_game(List<string> words_finished , List<string> words_failed){
         fur_game.gameObject.SetActive(false);
-        game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
         fur_game._games_finished = 0;
@@ -280,7 +277,6 @@ public class UI : MonoBehaviour
         close_care_screen();
         close_main_screen();
         ballon_game_screen.gameObject.SetActive(true);
-        game_screen_ui.SetActive(true);
         main_camera.transform.position = new Vector3(0, 0, -10);
         main_camera.orthographicSize = 6;
         control_mode = 3;
@@ -289,7 +285,6 @@ public class UI : MonoBehaviour
     public void close_ballon_game(List<string> words_done , List<string> words_wrong)
     {
         ballon_game_screen.gameObject.SetActive(false);
-        game_screen_ui.SetActive(false);
         start_main_screen();
         control_mode = 0;
         if(words_done != null){

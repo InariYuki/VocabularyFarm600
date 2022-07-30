@@ -10,13 +10,24 @@ public class BallonGame : MonoBehaviour
     List<string> vocabulary_library = new List<string>();
     List<string> total_words; //do not modify
     Dictionary<string , string> eng_to_cht_dict;
+    public List<Food> foods = new List<Food>();
+    private void Awake() {
+        for(int i = 0; i < foods.Count; i++){
+            foods[i].game = this;
+            foods[i].gameObject.SetActive(false);
+        }
+    }
     public void set_parameters(UI _ui , List<string> vocabulary , Dictionary<string , string> eng_to_cht , List<string> total_vocabulary){
+        words_done.Clear();
+        answer_wrong.Clear();
+        vocabulary_library.Clear();
+        finished_popup.SetActive(false);
+        exit_popup.SetActive(false);
         ui = _ui;
         vocabulary_library.AddRange(vocabulary);
         eng_to_cht_dict = eng_to_cht;
         total_words = total_vocabulary;
-        words_done.Clear();
-        answer_wrong.Clear();
+        target = 5;
         if(vocabulary_library.Count < 5){
             target = vocabulary_library.Count;
         }
@@ -30,7 +41,7 @@ public class BallonGame : MonoBehaviour
     public void set_ballon_origin(){
         ballon_origin = hot_ballon.transform.position;
     }
-    [SerializeField] HotBallon hot_ballon;
+    public HotBallon hot_ballon;
     public void reset_ballon_position(){
         hot_ballon.transform.position = new Vector2(0 , -3f);
     }
@@ -86,11 +97,22 @@ public class BallonGame : MonoBehaviour
         set_answer_wrong();
         set_progress();
         if(progress == target){
-            ui.close_ballon_game(words_done , answer_wrong);
+            finished_popup.SetActive(true);
             return;
         }
         set_question_and_clouds();
         release_clouds();
+    }
+    [SerializeField] GameObject finished_popup;
+    [SerializeField] GameObject exit_popup;
+    public void CloseBallonGame(){
+        ui.close_ballon_game(words_done , answer_wrong);
+    }
+    public void ReturnButtonPressed(){
+        exit_popup.SetActive(true);
+    }
+    public void ResumeButtonPressed(){
+        exit_popup.SetActive(false);
     }
     List<string> words_done = new List<string>();
     bool answer_is_right = false;

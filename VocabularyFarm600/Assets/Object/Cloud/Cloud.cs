@@ -14,6 +14,7 @@ public class Cloud : MonoBehaviour
     private void Awake() {
         sprite = GetComponent<SpriteRenderer>();
         ballon_layer = LayerMask.GetMask("Ballon");
+        mow_tree.GetComponent<MowTree>().cloud = this;
     }
     private void FixedUpdate() {
         detect_answer();
@@ -45,5 +46,15 @@ public class Cloud : MonoBehaviour
             can_move = false;
         }
         transform.position -= new Vector3(0 , 0.08f , 0);
+    }
+    public void MoveFoodToPosition(){
+        game.foods[0].transform.position = transform.position + new Vector3(-1.588f , 2.87f , 0);
+        game.foods[1].transform.position = transform.position + new Vector3(-0.65f , 4.37f , 0);
+        game.foods[2].transform.position = transform.position + new Vector3(1.25f , 4.1f , 0);
+        game.foods[3].transform.position = transform.position + new Vector3(2.21f , 2.81f , 0);
+        for(int i = 0; i < game.foods.Count; i++){
+            game.foods[i].gameObject.SetActive(true);
+            game.foods[i].SetRandomSprite();
+        }
     }
 }
