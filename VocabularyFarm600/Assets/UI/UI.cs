@@ -237,6 +237,30 @@ public class UI : MonoBehaviour
         spell_button_image.sprite = unclicked;
         translate_button_image.sprite = clicked;
     }
+    [SerializeField] GameObject memory_book;
+    [SerializeField] TextMeshProUGUI name_display_l , name_display_r , animal_collection_progress , summary_display_l , summary_display_r;
+    public void ToggleMemoryBook(){
+        memory_book.SetActive(true);
+        control_mode = 99;
+        animal_number = 0;
+        animal_collection_progress.text = "收集度 : " + animal_container.childCount + " / 20";
+        DisplayTwoAnimals();
+    }
+    int animal_number = 0;
+    void DisplayTwoAnimals(){
+        GiantAnimal anim = animal_container.GetChild(animal_number).GetComponent<GiantAnimal>();
+        name_display_l.text = anim.animal_name;
+        summary_display_l.text = $"{anim.feed_times}次\n{anim.brushed_times}次";
+        if(animal_number + 1 < animal_container.childCount){
+            anim = animal_container.GetChild(animal_number + 1).GetComponent<GiantAnimal>();
+            name_display_r.text = anim.animal_name;
+            summary_display_r.text = $"{anim.feed_times}次\n{anim.brushed_times}次";
+        }
+    }
+    public void CloseMemoryBook(){
+        memory_book.SetActive(false);
+        control_mode = 0;
+    }
     [SerializeField] GameObject main_screen;
     [SerializeField] FurGame fur_game;
     GiantAnimal game_animal;
@@ -297,6 +321,14 @@ public class UI : MonoBehaviour
             for(int i = 0; i < words_wrong.Count; i++){
                 game_animal.word_to_wrong_translation[words_wrong[i]] += 1;
             }
+        }
+    }
+    public void SetFeedOrBrushProgress(int feed_or_brush){ //0 = brush , 1 = ballon
+        if(feed_or_brush == 0){
+            game_animal.brushed_times++;
+        }
+        else if(feed_or_brush == 1){
+            game_animal.feed_times++;
         }
     }
     [SerializeField] GameObject build_screen_ui;

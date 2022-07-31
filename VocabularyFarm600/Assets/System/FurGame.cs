@@ -11,7 +11,7 @@ public class FurGame : MonoBehaviour
     public char[] alphabet = new char[26];
     Dictionary<char , Sprite> char_to_instance_dict = new Dictionary<char, Sprite>();
     List<string> vocabulary_library = new List<string>();
-    Dictionary<string , string> dictionary = new Dictionary<string, string>();
+    Dictionary<string , string> dictionary; // do not modify
     private void Awake() {
         for(int i = 0; i < alphabet_sprite.Length; i++){
             char_to_instance_dict[alphabet[i]] = alphabet_sprite[i];
@@ -24,9 +24,8 @@ public class FurGame : MonoBehaviour
         ui = _ui;
         vocabulary_library.Clear();
         vocabulary_library.AddRange(words);
-        for(int i = 0; i < words.Count; i++){
-            dictionary[words[i]] = eng_to_cht_dict[words[i]];
-        }
+        games_needs_to_be_finished = (vocabulary_library.Count >= 5) ? 5 : vocabulary_library.Count;
+        dictionary = eng_to_cht_dict;
         create_tangled_fur();
         set_current_word();
     }
@@ -35,13 +34,9 @@ public class FurGame : MonoBehaviour
     List<string> words_failed = new List<string>();
     string current_word;
     void set_current_word(){
-        if(vocabulary_library.Count == 0){
-            //current animal finished !
-            popup.SetActive(true);
-            return;
-        }
         if(_games_finished == games_needs_to_be_finished){
             popup.SetActive(true);
+            ui.SetFeedOrBrushProgress(0);
             return;
         }
         start_timer();

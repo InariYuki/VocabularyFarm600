@@ -98,6 +98,7 @@ public class BallonGame : MonoBehaviour
         set_progress();
         if(progress == target){
             finished_popup.SetActive(true);
+            ui.SetFeedOrBrushProgress(1);
             return;
         }
         set_question_and_clouds();

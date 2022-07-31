@@ -501,6 +501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d533d606a2da724f95e6e3416a8c2f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animal_name: "\u5154\u840A\u59C6"
   button_holder: {fileID: 292447950908857515}
   feet: {fileID: 292447950567894389}
   vocabulary_eng:
@@ -515,7 +516,8 @@ MonoBehaviour:
   - "\u7CD6\u679C"
   - "\u7238\u7238"
   - "\u5927\u8C61"
-  unfinished_eng: []
+  unfinished_eng_translation: []
+  unfinished_eng_spell: []
   speed: 3
 --- !u!61 &292447952342759490
 BoxCollider2D:

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GiantAnimal : MonoBehaviour
 {
+    public string animal_name;
+    [HideInInspector] public int feed_times = 0 , brushed_times = 0;
     [SerializeField] GameObject button_holder;
     [SerializeField] Transform feet;
     public List<string> vocabulary_eng = new List<string>();
