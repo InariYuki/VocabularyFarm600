@@ -239,6 +239,10 @@ public class UI : MonoBehaviour
     }
     [SerializeField] GameObject memory_book;
     [SerializeField] TextMeshProUGUI name_display_l , name_display_r , animal_collection_progress , summary_display_l , summary_display_r;
+    [SerializeField] Sprite default_image;
+    [SerializeField] RenderTexture animal_display_1 , animal_display_2;
+    [SerializeField] RawImage display_r , display_l;
+    [SerializeField] AnimalCamera animal_cam_1 , animal_cam_2;
     public void ToggleMemoryBook(){
         memory_book.SetActive(true);
         control_mode = 99;
@@ -251,15 +255,21 @@ public class UI : MonoBehaviour
         GiantAnimal anim = animal_container.GetChild(animal_number).GetComponent<GiantAnimal>();
         name_display_l.text = anim.animal_name;
         summary_display_l.text = $"{anim.feed_times}次\n{anim.brushed_times}次";
+        animal_cam_1.FollowTarget(anim);
+        display_l.texture = animal_display_1;
         if(animal_number + 1 < animal_container.childCount){
             anim = animal_container.GetChild(animal_number + 1).GetComponent<GiantAnimal>();
             name_display_r.text = anim.animal_name;
             summary_display_r.text = $"{anim.feed_times}次\n{anim.brushed_times}次";
+            animal_cam_2.FollowTarget(anim);
+            display_r.texture = animal_display_2;
         }
     }
     public void CloseMemoryBook(){
         memory_book.SetActive(false);
         control_mode = 0;
+        animal_cam_1.UnFollow();
+        animal_cam_2.UnFollow();
     }
     [SerializeField] GameObject main_screen;
     [SerializeField] FurGame fur_game;
