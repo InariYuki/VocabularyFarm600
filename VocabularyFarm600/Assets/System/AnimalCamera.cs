@@ -11,7 +11,7 @@ public class AnimalCamera : MonoBehaviour
     GiantAnimal target_animal;
     void Follow(){
         if(!is_following) return;
-        transform.position = Vector3.Lerp(transform.position , target_animal.transform.position , 2f);
+        transform.position = Vector3.Lerp(transform.position , target_animal.transform.position , 0.05f);
     }
     public void FollowTarget(GiantAnimal ani){
         target_animal = ani;
