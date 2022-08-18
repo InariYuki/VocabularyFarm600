@@ -371,4 +371,14 @@ public class UI : MonoBehaviour
     void instantiate_building(Vector2 pos){
         Instantiate(building , pos , Quaternion.identity , building_container);
     }
+    public void OpenSettingScreen()
+    {
+        main_screen_ui.SetActive(false);
+        control_mode = 5;
+    }
+    public void CloseSettingScreen()
+    {
+        main_screen_ui.SetActive(true);
+        control_mode = 0;
+    }
 }

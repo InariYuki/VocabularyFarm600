@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class GiantAnimal : MonoBehaviour
 {
-    public string animal_name;
-    [HideInInspector] public int feed_times = 0 , brushed_times = 0;
+    public string animal_name; //save
+    [HideInInspector] public int feed_times = 0 , brushed_times = 0;//save
     [SerializeField] GameObject button_holder;
     [SerializeField] Transform feet;
     public List<string> vocabulary_eng = new List<string>();
     public List<string> vocabulary_cht = new List<string>();
     [HideInInspector] public Dictionary<string , string> eng_to_cht = new Dictionary<string, string>();
-    [HideInInspector] public Dictionary<string , int> word_to_times_translation = new Dictionary<string, int>();
-    [HideInInspector] public Dictionary<string, int> word_to_wrong_translation = new Dictionary<string, int>();
-    [HideInInspector] public Dictionary<string, int> word_to_times_spell = new Dictionary<string, int>();
-    [HideInInspector] public Dictionary<string, int> word_to_wrong_spell = new Dictionary<string, int>();
-    [HideInInspector] public List<string> unfinished_eng_translation = new List<string>();
-    [HideInInspector] public List<string> unfinished_eng_spell = new List<string>();
+    [HideInInspector] public Dictionary<string , int> word_to_times_translation = new Dictionary<string, int>();//save
+    [HideInInspector] public Dictionary<string, int> word_to_wrong_translation = new Dictionary<string, int>();//save
+    [HideInInspector] public Dictionary<string, int> word_to_times_spell = new Dictionary<string, int>();//save
+    [HideInInspector] public Dictionary<string, int> word_to_wrong_spell = new Dictionary<string, int>();//save
+    [HideInInspector] public List<string> unfinished_eng_translation = new List<string>();//save
+    [HideInInspector] public List<string> unfinished_eng_spell = new List<string>();//save
     UI interacter;
     Rigidbody2D rigid_body;
     Animator animator;
