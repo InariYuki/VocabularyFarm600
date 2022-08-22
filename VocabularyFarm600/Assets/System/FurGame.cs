@@ -135,7 +135,7 @@ public class FurGame : MonoBehaviour
     [SerializeField] List<TangledFur> furs = new List<TangledFur>();
     List<TangledFur> tangled_furs = new List<TangledFur>();
     void create_tangled_fur(){
-        for(int i = 0; i < vocabulary_library.Count; i++){
+        for(int i = 0; i < 5; i++){
             furs[i].reset_opacity();
             tangled_furs.Add(furs[i]);
         }

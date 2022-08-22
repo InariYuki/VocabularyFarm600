@@ -53,7 +53,7 @@ public class UI : MonoBehaviour
         button_instanced.init(this);
     }
     public void add_g_animal(GiantAnimal animal){
-        Instantiate(animal , Vector3.zero , Quaternion.identity , animal_container);
+        Instantiate(animal , new Vector3(2f , 2f , 0f) , Quaternion.identity , animal_container);
     }
     public void game_ui_exit_pressed()
     {
