@@ -5,6 +5,8 @@ using UnityEngine;
 public class GiantAnimal : MonoBehaviour
 {
     public string animal_name; //save
+    public string animationNameInCareScreen;
+    public Vector3 spawnPoint;
     [HideInInspector] public int feed_times = 0 , brushed_times = 0;//save
     [SerializeField] GameObject button_holder;
     [SerializeField] Transform feet;
