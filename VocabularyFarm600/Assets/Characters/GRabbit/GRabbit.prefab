@@ -503,6 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animal_name: "\u5154\u840A\u59C6"
   animationNameInCareScreen: Grabbit
+  spawnPoint: {x: -8, y: 4, z: 0}
   feed_times: 0
   brushed_times: 0
   button_holder: {fileID: 292447950908857515}

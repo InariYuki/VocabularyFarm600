@@ -12,7 +12,7 @@ public class UI : MonoBehaviour
         building_layer = LayerMask.GetMask("Building");
     }
     private void Start() {
-        add_building_button(carrot_house_button);
+        add_building_button();
         add_g_animal(g_animals[0]);
     }
     private void Update() {
@@ -46,14 +46,17 @@ public class UI : MonoBehaviour
                 break;
         }
     }
-    [SerializeField] BuildingButton carrot_house_button;
     [SerializeField] Transform building_button_container;
-    public void add_building_button(BuildingButton button){
-        BuildingButton button_instanced = Instantiate(button  , building_button_container.position , Quaternion.identity , building_button_container);
-        button_instanced.init(this);
+    [SerializeField] List<BuildingButton> buildingButtons = new List<BuildingButton>();
+    public void add_building_button(){
+        for(int i = 0; i < buildingButtons.Count; i++)
+        {
+            BuildingButton button_instanced = Instantiate(buildingButtons[i]  , building_button_container.position , Quaternion.identity , building_button_container);
+            button_instanced.init(this);
+        }
     }
     public void add_g_animal(GiantAnimal animal){
-        Instantiate(animal , new Vector3(2f , 2f , 0f) , Quaternion.identity , animal_container);
+        Instantiate(animal , animal.spawnPoint , Quaternion.identity , animal_container);
     }
     public void game_ui_exit_pressed()
     {
