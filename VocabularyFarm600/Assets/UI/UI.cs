@@ -190,6 +190,7 @@ public class UI : MonoBehaviour
     }
     [SerializeField] GameObject care_screen;
     [SerializeField] Transform translation_score , spell_score;
+    [SerializeField] Animator animalAnimator;
     public void toggle_care_screen(GiantAnimal _game_animal){
         care_screen.SetActive(true);
         main_screen_ui.SetActive(false);
@@ -197,6 +198,7 @@ public class UI : MonoBehaviour
         control_mode = 99;
         display_score(translation_score , game_animal);
         display_score(spell_score , game_animal);
+        animalAnimator.Play(game_animal.animationNameInCareScreen);
     }
     public void close_care_screen(){
         care_screen.SetActive(false);

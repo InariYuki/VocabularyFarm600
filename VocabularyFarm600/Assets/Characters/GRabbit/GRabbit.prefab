@@ -502,6 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animal_name: "\u5154\u840A\u59C6"
+  animationNameInCareScreen: Grabbit
   feed_times: 0
   brushed_times: 0
   button_holder: {fileID: 292447950908857515}
@@ -570,7 +571,7 @@ MonoBehaviour:
   - "\u8DEF\u7DDA"
   unfinished_eng_translation: []
   unfinished_eng_spell: []
-  speed: 3
+  speed: 1
 --- !u!61 &292447952342759490
 BoxCollider2D:
   m_ObjectHideFlags: 0
