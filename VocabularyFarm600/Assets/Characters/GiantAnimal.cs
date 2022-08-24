@@ -114,7 +114,7 @@ public class GiantAnimal : MonoBehaviour
         rigid_body.MovePosition(rigid_body.position + direction * speed * Time.deltaTime);
     }
     IEnumerator rest_for_a_while(){
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
         position_decided = false;
         rested = false;
     }
