@@ -517,7 +517,7 @@ MonoBehaviour:
   - flight
   - accommodation
   - amenity
-  - dapart
+  - depart
   - board
   - claim
   - complimentary

@@ -40,6 +40,7 @@ public class Building : MonoBehaviour
         }
     }
     public void show_button(){
+        if (building_canvas == null) return;
         building_canvas.SetActive(true);
     }
     public void hide_button(){
@@ -47,7 +48,10 @@ public class Building : MonoBehaviour
     }
     IEnumerator hide(){
         yield return new WaitForSeconds(0.1f);
-        building_canvas.SetActive(false);
+        if (building_canvas != null)
+        {
+            building_canvas.SetActive(false);
+        }
     }
     public void destroy_building(){
         Destroy(gameObject);

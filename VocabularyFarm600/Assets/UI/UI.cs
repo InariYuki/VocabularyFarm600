@@ -13,7 +13,7 @@ public class UI : MonoBehaviour
     }
     private void Start() {
         add_building_button();
-        add_g_animal(g_animals[0]);
+        add_g_animal();
     }
     private void Update() {
         input_control();
@@ -22,7 +22,25 @@ public class UI : MonoBehaviour
     public Camera main_camera;
     Vector2 camera_clamp = new Vector2(48f , 27f);
     Vector3 touch_point;
-    GiantAnimal currently_interacting_animal;
+    GiantAnimal _currently_interacting_animal;
+    GiantAnimal currently_interacting_animal
+    {
+        set
+        {
+            if(_currently_interacting_animal != null)
+            {
+                if (_currently_interacting_animal._button_show && _currently_interacting_animal != value)
+                {
+                    _currently_interacting_animal.toggle_buttons();
+                }
+            }
+            _currently_interacting_animal = value;
+        }
+        get
+        {
+            return _currently_interacting_animal;
+        }
+    }
     public int control_mode = 0;
     LayerMask animal_layer , building_layer;
     void input_control(){
@@ -55,8 +73,11 @@ public class UI : MonoBehaviour
             button_instanced.init(this);
         }
     }
-    public void add_g_animal(GiantAnimal animal){
-        Instantiate(animal , animal.spawnPoint , Quaternion.identity , animal_container);
+    public void add_g_animal(){
+        for(int i = 0; i < g_animals.Count; i++)
+        {
+            Instantiate(g_animals[i] , g_animals[i].spawnPoint , Quaternion.identity , animal_container);
+        }
     }
     public void game_ui_exit_pressed()
     {
@@ -78,9 +99,6 @@ public class UI : MonoBehaviour
                 }
             }
             else{
-                if(currently_interacting_animal != null && currently_interacting_animal._button_show){
-                    currently_interacting_animal.toggle_buttons();
-                }
                 currently_interacting_animal = null;
             }
         }

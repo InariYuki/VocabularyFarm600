@@ -138,6 +138,11 @@ public class GiantAnimal : MonoBehaviour
         direction = (_target_position - feet.position).normalized;
         rigid_body.MovePosition(rigid_body.position + direction * speed * Time.deltaTime);
     }
+    IEnumerator wait_for_random_walk(){
+        yield return new WaitForSeconds(3f);
+        idle_mode_init();
+        enough_rest = false;
+    }
     void animation_ctl(){
         sprite.sortingOrder = Mathf.RoundToInt(-feet.position.y * 100);
         if(direction != Vector2.zero){
@@ -151,11 +156,6 @@ public class GiantAnimal : MonoBehaviour
                 else animator.SetFloat("Motion" , 2);
             }
         }
-        else animator.SetFloat("Motion" , 2);
-    }
-    IEnumerator wait_for_random_walk(){
-        yield return new WaitForSeconds(3f);
-        idle_mode_init();
-        enough_rest = false;
+        else animator.SetFloat("Motion" , 3);
     }
 }
