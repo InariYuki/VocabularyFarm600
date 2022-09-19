@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2709869147476321214}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2709869147476321215
 GameObject:
@@ -61,9 +61,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4328609907362990319}
   - {fileID: 2709869147340633102}
   - {fileID: 2709869147892541197}
-  - {fileID: 4328609907362990319}
   - {fileID: 3786114932632854824}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -87,7 +87,9 @@ MonoBehaviour:
   green_grid: {fileID: 21300000, guid: d45a19567ca2c9648bd7dc1d1823bed0, type: 3}
   red_grid: {fileID: 21300000, guid: 88b6a4a94b76fa04c9ae8ba21d943e20, type: 3}
   building_canvas: {fileID: 8114291909129641858}
+  buildingName: "\u8349\u53E2\u5927 \u85CD"
   can_be_moved: 1
+  buildingSprite: {fileID: 0}
 --- !u!61 &2709869147476321187
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -144,7 +146,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2709869147476321214}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2709869147892541196
 SpriteRenderer:
@@ -228,7 +230,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2709869147476321214}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5285506782375254466
 SpriteRenderer:

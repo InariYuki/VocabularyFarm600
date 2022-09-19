@@ -87,6 +87,7 @@ MonoBehaviour:
   green_grid: {fileID: 21300000, guid: d45a19567ca2c9648bd7dc1d1823bed0, type: 3}
   red_grid: {fileID: 21300000, guid: 88b6a4a94b76fa04c9ae8ba21d943e20, type: 3}
   building_canvas: {fileID: 8114291909129641858}
+  buildingName: "\u8349\u53E2\u5927 \u7C89"
   can_be_moved: 1
 --- !u!61 &2709869147476321187
 BoxCollider2D:

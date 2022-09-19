@@ -111,10 +111,13 @@ public class UI : MonoBehaviour
         }
         main_camera.orthographicSize = Mathf.Clamp(main_camera.orthographicSize - Input.GetAxisRaw("Mouse ScrollWheel") , 1 , 16);
     }
+    [SerializeField] GameObject flag;
     void object_control_mode(){
         if(Input.GetKeyDown(KeyCode.Mouse0)){
-            currently_interacting_animal.target_position = main_camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 po = main_camera.ScreenToWorldPoint(Input.mousePosition);
+            currently_interacting_animal.target_position = po;
             touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
+            Instantiate(flag, po , Quaternion.identity);
             control_mode = 0;
         }
     }
@@ -235,6 +238,8 @@ public class UI : MonoBehaviour
     //=====================================build mode========================================
     int build_mode_substate = 0;
     Building current_building;
+    [SerializeField] Image buildingDisplay;
+    [SerializeField] TextMeshProUGUI buildingName;
     [SerializeField] GameObject Grid_display;
     [SerializeField] GameObject build_screen_ui;
     [SerializeField] Transform building_container;
@@ -257,14 +262,21 @@ public class UI : MonoBehaviour
                         current_building = hit.transform.GetComponent<Building>();
                         if(!current_building.can_be_moved){
                             current_building = null;
+                            buildingDisplay.enabled = false;
+                            buildingName.text = "";
                             return;
                         }
                         current_building.show_button();
+                        buildingDisplay.enabled = true;
+                        buildingDisplay.sprite = current_building.buildingSprite;
+                        buildingName.text = current_building.buildingName;
                     }
                     else{
                         if(current_building != null){
                             current_building.hide_button();
                             current_building = null;
+                            buildingDisplay.enabled = false;
+                            buildingName.text = "";
                         }
                     }
                 }
@@ -297,6 +309,9 @@ public class UI : MonoBehaviour
     GameObject building;
     public void set_building(GameObject _building){
         building = _building;
+        buildingDisplay.enabled = true;
+        buildingDisplay.sprite = building.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
+        buildingName.text = building.GetComponent<Building>().buildingName;
         build_mode_substate = 0;
     }
     void instantiate_building(Vector2 pos){
