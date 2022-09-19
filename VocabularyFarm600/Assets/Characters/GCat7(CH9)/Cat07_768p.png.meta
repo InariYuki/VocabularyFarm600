@@ -132,7 +132,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 1536
         width: 768
         height: 768
       alignment: 0
@@ -153,7 +153,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 0
+        y: 1536
         width: 768
         height: 768
       alignment: 0
@@ -174,7 +174,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 0
+        y: 1536
         width: 768
         height: 768
       alignment: 0
@@ -195,7 +195,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2304
-        y: 0
+        y: 1536
         width: 768
         height: 768
       alignment: 0
@@ -215,8 +215,8 @@ TextureImporter:
       name: Cat07_768p_4
       rect:
         serializedVersion: 2
-        x: 3072
-        y: 0
+        x: 0
+        y: 768
         width: 768
         height: 768
       alignment: 0
@@ -236,8 +236,8 @@ TextureImporter:
       name: Cat07_768p_5
       rect:
         serializedVersion: 2
-        x: 3840
-        y: 0
+        x: 768
+        y: 768
         width: 768
         height: 768
       alignment: 0
@@ -257,8 +257,8 @@ TextureImporter:
       name: Cat07_768p_6
       rect:
         serializedVersion: 2
-        x: 4608
-        y: 0
+        x: 1536
+        y: 768
         width: 768
         height: 768
       alignment: 0
@@ -278,8 +278,8 @@ TextureImporter:
       name: Cat07_768p_7
       rect:
         serializedVersion: 2
-        x: 5376
-        y: 0
+        x: 2304
+        y: 768
         width: 768
         height: 768
       alignment: 0
@@ -299,7 +299,7 @@ TextureImporter:
       name: Cat07_768p_8
       rect:
         serializedVersion: 2
-        x: 6144
+        x: 0
         y: 0
         width: 768
         height: 768
@@ -320,7 +320,7 @@ TextureImporter:
       name: Cat07_768p_9
       rect:
         serializedVersion: 2
-        x: 6912
+        x: 768
         y: 0
         width: 768
         height: 768
