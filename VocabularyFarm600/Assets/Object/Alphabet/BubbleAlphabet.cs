@@ -6,12 +6,7 @@ public class BubbleAlphabet : MonoBehaviour
 {
     Rigidbody2D body;
     SpriteRenderer sprite;
-    int _me;
-    public int me{
-        get{
-            return _me;
-        }
-    }
+    public char c;
     private void Awake() {
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -23,9 +18,9 @@ public class BubbleAlphabet : MonoBehaviour
         border_approach_control();
         move();
     }
-    public void set_sprite(Sprite alphabet_sprite , int word){
+    public void set_sprite(Sprite alphabet_sprite , char word){
         sprite.sprite = alphabet_sprite;
-        _me = word;
+        c = word;
     }
     Vector2 _direction , _velocity;
     public Vector2 velocity{

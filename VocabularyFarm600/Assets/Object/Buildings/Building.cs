@@ -9,12 +9,15 @@ public class Building : MonoBehaviour
     [SerializeField] Vector2 size = new Vector2(2.56f , 2.56f);
     [SerializeField] Sprite green_grid , red_grid;
     [SerializeField] GameObject building_canvas;
+    public string buildingName;
     public bool can_be_moved = true;
+    [HideInInspector] public Sprite buildingSprite;
     LayerMask building_layer;
     BoxCollider2D collision;
     private void Awake() {
         collision = GetComponent<BoxCollider2D>();
         building_layer = LayerMask.GetMask("Building");
+        buildingSprite = transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
     }
     private void Start() {
         collision.size = size;

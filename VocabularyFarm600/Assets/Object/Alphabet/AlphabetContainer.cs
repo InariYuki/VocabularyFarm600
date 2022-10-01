@@ -8,8 +8,8 @@ public class AlphabetContainer : MonoBehaviour
         detect_alphabet();
         pull_alphabet();
     }
-    int expecting_char;
-    public void set_expecting_char(int c , FurGame _controller){
+    char expecting_char;
+    public void set_expecting_char(char c , FurGame _controller){
         expecting_char = c;
         controller = _controller;
     }
@@ -20,9 +20,9 @@ public class AlphabetContainer : MonoBehaviour
         Collider2D[] alphabets = Physics2D.OverlapCircleAll(transform.position , radius);
         for(int i = 0 ; i < alphabets.Length; i++){
             BubbleAlphabet alphabet = alphabets[i].GetComponent<BubbleAlphabet>();
-            if(alphabet != null && expecting_char == alphabet.me){
-                alphabet_pulled = alphabet;
+            if(alphabet != null && expecting_char == alphabet.c){
                 received = true;
+                alphabet_pulled = alphabet;
                 controller.check_word_finished();
                 break;
             }

@@ -5,13 +5,8 @@ using UnityEngine.UI;
 
 public class BuildingButton : MonoBehaviour
 {
-    Vector2 size;
-    Image image;
     UI ui;
     [SerializeField] GameObject building;
-    private void Awake() {
-        image = GetComponent<Image>();
-    }
     public void init(UI _ui){
         ui = _ui;
     }

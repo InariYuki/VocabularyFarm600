@@ -5,8 +5,10 @@ using UnityEngine;
 public class TangledFur : MonoBehaviour
 {
     SpriteRenderer sprite;
+    Animator anim;
     private void Awake() {
         sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
     float opacity = 1;
     public void reset_opacity(){

@@ -49,8 +49,8 @@ public class FurGame : MonoBehaviour
         word_display.text = word_set[1];
         word_length = word_set[0].Length;
         for(int i = 0; i < word_set[0].Length; i++){
-            instantiate_alphabet(word_set[0][i] , i);
-            instantiate_alphabet_container(i , new Vector2(-(word_length - 1) * 0.64f + i * 1.28f , -3));
+            instantiate_alphabet(word_set[0][i]);
+            instantiate_alphabet_container(word_set[0][i], new Vector2(-(word_length - 1) * 0.64f + i * 1.28f , -3));
         }
     }
     [SerializeField] GameObject exit_popup;
@@ -67,12 +67,12 @@ public class FurGame : MonoBehaviour
     }
     [SerializeField] GameObject bubble_alphabet;
     [SerializeField] Transform game_container;
-    void instantiate_alphabet(char word , int id){
+    void instantiate_alphabet(char word){
         BubbleAlphabet alphabet_instanced = Instantiate(bubble_alphabet , new Vector3(Random.Range(-5f , 5f) , Random.Range(-0.5f , 2f)) , Quaternion.identity , game_container).GetComponent<BubbleAlphabet>();
-        alphabet_instanced.set_sprite(char_to_instance_dict[word] , id);
+        alphabet_instanced.set_sprite(char_to_instance_dict[word] , word);
     }
     [SerializeField] GameObject alphabet_container;
-    void instantiate_alphabet_container(int word , Vector2 pos){
+    void instantiate_alphabet_container(char word , Vector2 pos){
         AlphabetContainer alphabet_container_instanced = Instantiate(alphabet_container , pos , Quaternion.identity , game_container).GetComponent<AlphabetContainer>();
         alphabet_container_instanced.set_expecting_char(word , this);
     }
