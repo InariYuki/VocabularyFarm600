@@ -16,13 +16,14 @@ public class TangledFur : MonoBehaviour
         sprite.color = new Vector4(1 , 1 , 1 , 1);
     }
     public void fade_out(){
-        if(opacity <= 0) return;
-        opacity -= 0.02f;
-        sprite.color = new Vector4(1 , 1 , 1 , opacity);
         StartCoroutine(fade_process());
+        anim.Play("FurUntangle");
     }
     IEnumerator fade_process(){
-        yield return new WaitForSeconds(0.02f);
-        fade_out();
+        while(opacity >= 0){
+            opacity -= 0.02f;
+            sprite.color = new Vector4(1 , 1 , 1 , opacity);
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 }

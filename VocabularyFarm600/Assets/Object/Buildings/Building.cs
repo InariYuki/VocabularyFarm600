@@ -17,7 +17,10 @@ public class Building : MonoBehaviour
     private void Awake() {
         collision = GetComponent<BoxCollider2D>();
         building_layer = LayerMask.GetMask("Building");
-        buildingSprite = transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
+        Transform t = transform.Find("Sprite");
+        if(t != null){
+            buildingSprite = t.GetComponent<SpriteRenderer>().sprite;
+        }
     }
     private void Start() {
         collision.size = size;
