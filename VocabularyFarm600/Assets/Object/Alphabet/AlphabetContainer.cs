@@ -43,4 +43,14 @@ public class AlphabetContainer : MonoBehaviour
     private void OnDrawGizmos() {
         Gizmos.DrawWireSphere(transform.position , radius);
     }
+    public void AutoGetChar()
+    {
+        BubbleAlphabet target = controller.CatchAlphabet(expecting_char);
+        if (target == null) return;
+        received = true;
+        target.transform.SetParent(transform);
+        target.stop();
+        target.transform.position = transform.position;
+        controller.check_word_finished();
+    }
 }

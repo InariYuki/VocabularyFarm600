@@ -72,6 +72,7 @@ public class BallonGame : MonoBehaviour
         }
     }
     void release_clouds(){
+        DehighLightCloud();
         answer_clouds[0].transform.position = left_most_spawn_point;
         answer_clouds[1].transform.position = left_spawn_point;
         answer_clouds[2].transform.position = right_spawn_point;
@@ -135,5 +136,27 @@ public class BallonGame : MonoBehaviour
     void set_progress(){
         progress++;
         progress_display.text = "完成 : " + progress + " / " + target;
+    }
+    [SerializeField] Transform SOSArrow;
+    public void SOSButtonPressed()
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            Cloud c = transform.GetChild(i).GetComponent<Cloud>();
+            if (c != null)
+            {
+                c.HighLightAnswer();
+            }
+        }
+    }
+    public void HighLightCloud(Cloud cloud)
+    {
+        SOSArrow.gameObject.SetActive(true);
+        SOSArrow.position = cloud.transform.position;
+        SOSArrow.SetParent(cloud.transform);
+    }
+    void DehighLightCloud()
+    {
+        SOSArrow.gameObject.SetActive(false);
     }
 }

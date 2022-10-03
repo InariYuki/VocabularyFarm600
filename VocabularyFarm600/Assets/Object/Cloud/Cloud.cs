@@ -57,4 +57,11 @@ public class Cloud : MonoBehaviour
             game.foods[i].SetRandomSprite();
         }
     }
+    public void HighLightAnswer()
+    {
+        if (is_answer)
+        {
+            game.HighLightCloud(this);
+        }
+    }
 }

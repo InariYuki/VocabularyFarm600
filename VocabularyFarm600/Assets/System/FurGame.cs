@@ -82,6 +82,21 @@ public class FurGame : MonoBehaviour
             Destroy(game_container.GetChild(i).gameObject);
         }
     }
+    public BubbleAlphabet CatchAlphabet(char c)
+    {
+        for(int i = 0; i < game_container.childCount; i++)
+        {
+            BubbleAlphabet b = game_container.GetChild(i).GetComponent<BubbleAlphabet>();
+            if (b != null)
+            {
+                if(b.c == c)
+                {
+                    return b;
+                }
+            }
+        }
+        return null;
+    }
     int word_length;
     int finished_count = 0;
     public void check_word_finished(){
@@ -148,5 +163,16 @@ public class FurGame : MonoBehaviour
     [SerializeField] Transform comb;
     public void set_comb_position(Vector2 pos){
         comb.position = pos;
+    }
+    public void SOSButtonPressed()
+    {
+        for(int i = 0; i < game_container.childCount; i++)
+        {
+            AlphabetContainer container = game_container.GetChild(i).GetComponent<AlphabetContainer>();
+            if(container != null)
+            {
+                container.AutoGetChar();
+            }
+        }
     }
 }
