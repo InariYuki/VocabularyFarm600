@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GiantAnimal : MonoBehaviour
 {
     public string animal_name; //save
+    GameObject animalNameCanvas;
     public string animationNameInCareScreen;
     public Vector3 spawnPoint;
     [HideInInspector] public int feed_times = 0 , brushed_times = 0;//save
@@ -29,6 +31,8 @@ public class GiantAnimal : MonoBehaviour
         rigid_body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        animalNameCanvas = transform.Find("AnimalName").gameObject;
+        animalNameCanvas.GetComponentInChildren<TextMeshProUGUI>().text = animal_name;
         for(int i = 0; i < vocabulary_eng.Count; i++){
             eng_to_cht[vocabulary_eng[i]] = vocabulary_cht[i];
             word_to_times_translation[vocabulary_eng[i]] = 0;
@@ -87,6 +91,7 @@ public class GiantAnimal : MonoBehaviour
     }
     public void walk_button_clicked(){
         interacter.control_mode = 1;
+        interacter.ShowAnimalMoveHint();
         ai_state = 2;
         toggle_buttons();
     }
@@ -157,5 +162,13 @@ public class GiantAnimal : MonoBehaviour
             }
         }
         else animator.SetFloat("Motion" , 3);
+    }
+    public void animalNameOn()
+    {
+        animalNameCanvas.SetActive(true);
+    }
+    public void animalNameOff()
+    {
+        animalNameCanvas.SetActive(false);
     }
 }

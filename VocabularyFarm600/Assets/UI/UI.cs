@@ -119,7 +119,17 @@ public class UI : MonoBehaviour
             touch_point = main_camera.ScreenToWorldPoint(Input.mousePosition);
             Instantiate(flag, po , Quaternion.identity);
             control_mode = 0;
+            HideAnimalMoveHint();
         }
+    }
+    [SerializeField] GameObject animalMoveHint;
+    public void ShowAnimalMoveHint()
+    {
+        animalMoveHint.SetActive(true);
+    }
+    public void HideAnimalMoveHint()
+    {
+        animalMoveHint.SetActive(false);
     }
     //------------------------------------fur game------------------------------------
     [SerializeField] FurGame fur_game;
@@ -422,6 +432,18 @@ public class UI : MonoBehaviour
             animal_cam_2.FollowTarget(anim);
             display_r.texture = animal_display_2;
         }
+    }
+    public void NextPage()
+    {
+        animal_number += 2;
+        animal_number = Mathf.Clamp(animal_number , 0 , animal_container.childCount - 1);
+        DisplayTwoAnimals();
+    }
+    public void PreviousPage()
+    {
+        animal_number -= 2;
+        animal_number = Mathf.Clamp(animal_number, 0, animal_container.childCount - 1);
+        DisplayTwoAnimals();
     }
     public void CloseMemoryBook(){
         memory_book.SetActive(false);
