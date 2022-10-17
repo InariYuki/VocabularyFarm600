@@ -12,13 +12,16 @@ public class FurGame : MonoBehaviour
     Dictionary<char , Sprite> char_to_instance_dict = new Dictionary<char, Sprite>();
     List<string> vocabulary_library = new List<string>();
     Dictionary<string , string> dictionary; // do not modify
+    SpriteRenderer countDownSprite;
     private void Awake() {
+        countDownSprite = transform.Find("CountDown").GetComponent<SpriteRenderer>();
         for(int i = 0; i < alphabet_sprite.Length; i++){
             char_to_instance_dict[alphabet[i]] = alphabet_sprite[i];
         }
     }
     UI ui;
     public void set_library(UI _ui , List<string> words , Dictionary<string , string> eng_to_cht_dict){
+        remove_all_props();
         popup.SetActive(false);
         exit_popup.SetActive(false);
         ui = _ui;
@@ -27,6 +30,18 @@ public class FurGame : MonoBehaviour
         games_needs_to_be_finished = (vocabulary_library.Count >= 5) ? 5 : vocabulary_library.Count;
         dictionary = eng_to_cht_dict;
         create_tangled_fur();
+        StartCoroutine(CountDown());
+    }
+    [SerializeField] List<Sprite> countDownNums;
+    IEnumerator CountDown(){
+        countDownSprite.gameObject.SetActive(true);
+        int count = 2;
+        while(count >= 0){
+            countDownSprite.sprite = countDownNums[count];
+            count--;
+            yield return new WaitForSeconds(1f);
+        }
+        countDownSprite.gameObject.SetActive(false);
         set_current_word();
     }
     [HideInInspector] public int _games_finished = 0 , games_needs_to_be_finished = 5;

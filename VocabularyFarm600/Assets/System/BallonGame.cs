@@ -11,7 +11,11 @@ public class BallonGame : MonoBehaviour
     List<string> total_words; //do not modify
     Dictionary<string , string> eng_to_cht_dict;
     public List<Food> foods = new List<Food>();
+    SpriteRenderer countDownSprite;
     private void Awake() {
+        countDownSprite = transform.Find("CountDown").GetComponent<SpriteRenderer>();
+    }
+    void ResetFoods(){
         for(int i = 0; i < foods.Count; i++){
             foods[i].game = this;
             foods[i].gameObject.SetActive(false);
@@ -34,6 +38,20 @@ public class BallonGame : MonoBehaviour
         progress_display.text = "完成 : 0 / " + target;
         progress = 0;
         reset_ballon_position();
+        ReserClouds();
+        ResetFoods();
+        StartCoroutine(CountDown());
+    }
+    [SerializeField] List<Sprite> countDownNums;
+    IEnumerator CountDown(){
+        int count = 2;
+        countDownSprite.gameObject.SetActive(true);
+        while(count >= 0){
+            countDownSprite.sprite = countDownNums[count];
+            count--;
+            yield return new WaitForSeconds(1f);
+        }
+        countDownSprite.gameObject.SetActive(false);
         set_question_and_clouds();
         release_clouds();
     }
@@ -70,6 +88,16 @@ public class BallonGame : MonoBehaviour
             all_clouds[i].set_answer(this , eng_to_cht_dict[wrong_answers[random_wrong]] , false);
             wrong_answers.Remove(wrong_answers[random_wrong]);
         }
+    }
+    void ReserClouds(){
+        for(int i = 0; i < 4; i++){
+            answer_clouds[i].transform.position += new Vector3(Random.Range(-0.5f , 0.5f) , Random.Range(-3f , 3f) , 0);
+            answer_clouds[i].can_move = false;
+        }
+        answer_clouds[0].transform.position = left_most_spawn_point;
+        answer_clouds[1].transform.position = left_spawn_point;
+        answer_clouds[2].transform.position = right_spawn_point;
+        answer_clouds[3].transform.position = right_most_spawn_point;
     }
     void release_clouds(){
         DehighLightCloud();

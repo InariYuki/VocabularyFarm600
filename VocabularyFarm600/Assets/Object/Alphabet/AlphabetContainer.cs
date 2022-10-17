@@ -46,7 +46,7 @@ public class AlphabetContainer : MonoBehaviour
     public void AutoGetChar()
     {
         BubbleAlphabet target = controller.CatchAlphabet(expecting_char);
-        if (target == null) return;
+        if (target == null || received) return;
         received = true;
         target.transform.SetParent(transform);
         target.stop();
